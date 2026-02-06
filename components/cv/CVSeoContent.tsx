@@ -33,7 +33,7 @@ const steps = [
     number: "03",
     title: "VELG MAL OG LAST NED",
     description:
-      "Forhåndsvis CV-en i sanntid med 5 profesjonelle maler tilpasset norsk arbeidsmarked. Last ned som PDF klar til å sendes.",
+      "Forhåndsvis CV-en i sanntid med 10 profesjonelle maler tilpasset norsk arbeidsmarked. Last ned som PDF klar til å sendes.",
     icon: Download,
   },
 ];
@@ -46,9 +46,9 @@ const benefits = [
     icon: Clock,
   },
   {
-    title: "5 PROFESJONELLE MALER",
+    title: "10 PROFESJONELLE MALER",
     description:
-      "Nordisk (minimalistisk), Oslo (moderne sidebar), Eksekutiv (klassisk), Kreativ (tokolonne) og Kompakt (komprimert). Alle tilpasset norsk standard.",
+      "Fra minimalistisk Nordisk til fargerik Bergen — 10 unike CV-maler med ulike layouter, farger og stiler. Alle tilpasset norsk standard.",
     icon: Palette,
   },
   {
@@ -69,12 +69,12 @@ const faqs = [
   {
     question: "Hvordan fungerer CV-byggeren?",
     answer:
-      "CV-byggeren guider deg gjennom 6 steg: personalia, profesjonelt sammendrag, arbeidserfaring, utdanning, ferdigheter og språk. Du fyller inn informasjonen din steg for steg, og kan bruke KI til å forbedre teksten underveis. Til slutt velger du en av 5 maler og laster ned som PDF.",
+      "CV-byggeren guider deg gjennom 6 steg: personalia, profesjonelt sammendrag, arbeidserfaring, utdanning, ferdigheter og språk. Du fyller inn informasjonen din steg for steg, og kan bruke KI til å forbedre teksten underveis. Til slutt velger du en av 10 maler og laster ned som PDF.",
   },
   {
     question: "Hvilke CV-maler finnes?",
     answer:
-      "Det finnes 5 maler: Nordisk (minimalistisk med mye luft), Oslo (mørk sidebar, moderne utseende), Eksekutiv (klassisk og formell), Kreativ (tokolonne-layout), og Kompakt (plasseffektiv for mye erfaring). Alle er designet for norsk arbeidsmarked.",
+      "Det finnes 10 maler med unike layouter, farger og stiler — blant annet Nordisk, Oslo, Eksekutiv, Kreativ, Kompakt, Tidslinje, Fjord, Stavanger, Diplomatisk og Bergen. Alle er designet for norsk arbeidsmarked.",
   },
   {
     question: "Kan KI-en skrive sammendrag for meg?",
@@ -104,7 +104,7 @@ export default function CVSeoContent() {
   return (
     <div className="border-t border-foreground/5">
       {/* Slik bygger du CV-en */}
-      <section className="bg-background px-10 py-24">
+      <section className="bg-background px-5 md:px-8 lg:px-10py-24">
         <div className="mx-auto max-w-[1400px]">
           <div className="mb-16">
             <span className="industrial-label mb-4 block">
@@ -140,7 +140,7 @@ export default function CVSeoContent() {
       </section>
 
       {/* Fordeler */}
-      <section className="bg-secondary px-10 py-24 border-y border-foreground/5">
+      <section className="bg-secondary px-5 md:px-8 lg:px-10py-24 border-y border-foreground/5">
         <div className="mx-auto max-w-[1400px]">
           <div className="mb-16">
             <span className="industrial-label mb-4 block">
@@ -174,7 +174,7 @@ export default function CVSeoContent() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-background px-10 py-24">
+      <section className="bg-background px-5 md:px-8 lg:px-10py-24">
         <div className="mx-auto max-w-[1400px]">
           <div className="mb-16">
             <span className="industrial-label mb-4 block">
@@ -213,7 +213,7 @@ export default function CVSeoContent() {
       </section>
 
       {/* Cross-selling */}
-      <section className="bg-secondary px-10 py-16 border-t border-foreground/5">
+      <section className="bg-secondary px-5 md:px-8 lg:px-10py-16 border-t border-foreground/5">
         <div className="mx-auto max-w-[1400px] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <span className="industrial-label mb-2 block">

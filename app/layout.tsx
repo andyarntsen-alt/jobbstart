@@ -48,6 +48,15 @@ export const metadata: Metadata = {
     title: siteConfig.title.default,
     description: siteConfig.description,
     creator: siteConfig.twitterHandle,
+    images: ["/opengraph-image"],
+  },
+
+  icons: {
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icon-192.png" }],
   },
 
   robots: {

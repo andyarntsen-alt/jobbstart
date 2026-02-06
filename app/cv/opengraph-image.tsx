@@ -64,7 +64,7 @@ export default function OGImage() {
             opacity: 0.5,
           }}
         >
-          5 MALER • KI-SAMMENDRAG • 6-STEGS VEIVISER • PDF EKSPORT
+          10 MALER • KI-SAMMENDRAG • 6-STEGS VEIVISER • PDF EKSPORT
         </div>
       </div>
     ),

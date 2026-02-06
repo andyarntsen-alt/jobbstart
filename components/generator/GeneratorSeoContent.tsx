@@ -104,7 +104,7 @@ export default function GeneratorSeoContent() {
   return (
     <div className="border-t border-foreground/5">
       {/* Slik fungerer det */}
-      <section className="bg-background px-10 py-24">
+      <section className="bg-background px-5 md:px-8 lg:px-10py-24">
         <div className="mx-auto max-w-[1400px]">
           <div className="mb-16">
             <span className="industrial-label mb-4 block">
@@ -140,7 +140,7 @@ export default function GeneratorSeoContent() {
       </section>
 
       {/* Fordeler */}
-      <section className="bg-secondary px-10 py-24 border-y border-foreground/5">
+      <section className="bg-secondary px-5 md:px-8 lg:px-10py-24 border-y border-foreground/5">
         <div className="mx-auto max-w-[1400px]">
           <div className="mb-16">
             <span className="industrial-label mb-4 block">
@@ -174,7 +174,7 @@ export default function GeneratorSeoContent() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-background px-10 py-24">
+      <section className="bg-background px-5 md:px-8 lg:px-10py-24">
         <div className="mx-auto max-w-[1400px]">
           <div className="mb-16">
             <span className="industrial-label mb-4 block">
@@ -213,14 +213,14 @@ export default function GeneratorSeoContent() {
       </section>
 
       {/* Cross-selling */}
-      <section className="bg-secondary px-10 py-16 border-t border-foreground/5">
+      <section className="bg-secondary px-5 md:px-8 lg:px-10py-16 border-t border-foreground/5">
         <div className="mx-auto max-w-[1400px] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <span className="industrial-label mb-2 block">
               / TRENGER DU EN CV OGSÅ?
             </span>
             <p className="text-sm text-foreground/60 uppercase tracking-wider">
-              Bygg en profesjonell CV med KI-drevne forslag og 5 norske maler.
+              Bygg en profesjonell CV med KI-drevne forslag og 10 norske maler.
             </p>
           </div>
           <Link

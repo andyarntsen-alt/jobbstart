@@ -6,18 +6,13 @@ export function getOrganizationSchema() {
     "@type": "Organization",
     name: siteConfig.name,
     url: siteConfig.url,
-    logo: `${siteConfig.url}/logo.png`,
+    logo: `${siteConfig.url}/logo.svg`,
     email: siteConfig.email,
     address: {
       "@type": "PostalAddress",
       addressLocality: siteConfig.address.city,
       addressCountry: "NO",
     },
-    sameAs: [
-      siteConfig.social.facebook,
-      siteConfig.social.linkedin,
-      siteConfig.social.instagram,
-    ],
   };
 }
 
@@ -40,7 +35,7 @@ export function getWebApplicationSchema() {
     inLanguage: "no",
     featureList: [
       "KI-generert jobbsøknad",
-      "CV-bygger med 5 maler",
+      "CV-bygger med 10 maler",
       "FINN.no-integrasjon",
       "PDF og Word eksport",
       "PSTAR-metoden",
@@ -66,7 +61,7 @@ export function getFAQSchema() {
         name: "Hva koster det å bruke JobbStart?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "JobbStart tilbyr tre pakker: Enkel (49 kr for 1 søknad), Standard (149 kr for 5 søknader + CV-bygger), og Ubegrenset (249 kr for 20 søknader + full CV med KI-forbedring).",
+          text: "JobbStart tilbyr tre pakker: Enkel (49 kr for 1 søknad), Standard (149 kr for 5 søknader + CV-bygger), og Max (249 kr for 20 søknader + full CV med KI-forbedring).",
         },
       },
       {
@@ -74,7 +69,7 @@ export function getFAQSchema() {
         name: "Kan jeg lage CV med JobbStart?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Ja! CV-byggeren har en 6-stegs veiviser med auto-lagring, KI-generert sammendrag, KI-forbedrede erfaringsbeskrivelser, og 5 profesjonelle PDF-maler tilpasset norsk arbeidsmarked.",
+          text: "Ja! CV-byggeren har en 6-stegs veiviser med auto-lagring, KI-generert sammendrag, KI-forbedrede erfaringsbeskrivelser, og 10 profesjonelle PDF-maler tilpasset norsk arbeidsmarked.",
         },
       },
       {
@@ -156,7 +151,7 @@ export function getCVFAQSchema() {
         name: "Hvordan fungerer CV-byggeren?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "CV-byggeren guider deg gjennom 6 steg: personalia, profesjonelt sammendrag, arbeidserfaring, utdanning, ferdigheter og språk. Du fyller inn informasjonen din steg for steg, og kan bruke KI til å forbedre teksten underveis. Til slutt velger du en av 5 maler og laster ned som PDF.",
+          text: "CV-byggeren guider deg gjennom 6 steg: personalia, profesjonelt sammendrag, arbeidserfaring, utdanning, ferdigheter og språk. Du fyller inn informasjonen din steg for steg, og kan bruke KI til å forbedre teksten underveis. Til slutt velger du en av 10 maler og laster ned som PDF.",
         },
       },
       {
@@ -164,7 +159,7 @@ export function getCVFAQSchema() {
         name: "Hvilke CV-maler finnes?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Det finnes 5 maler: Nordisk (minimalistisk med mye luft), Oslo (mørk sidebar, moderne utseende), Eksekutiv (klassisk og formell), Kreativ (tokolonne-layout), og Kompakt (plasseffektiv for mye erfaring). Alle er designet for norsk arbeidsmarked.",
+          text: "Det finnes 10 maler med unike layouter, farger og stiler — blant annet Nordisk, Oslo, Eksekutiv, Kreativ, Kompakt, Tidslinje, Fjord, Stavanger, Diplomatisk og Bergen. Alle er designet for norsk arbeidsmarked.",
         },
       },
       {

@@ -10,7 +10,7 @@ export default function CVPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-black/5 bg-background">
-        <div className="mx-auto flex h-[80px] max-w-[1400px] items-center justify-between px-10">
+        <div className="mx-auto flex h-[80px] max-w-[1400px] items-center justify-between px-5 md:px-8 lg:px-10">
           <Link href="/">
             <span className="text-2xl font-extrabold tracking-tight">
               JOBBSTART
@@ -25,7 +25,7 @@ export default function CVPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[900px] px-10 py-6">
+      <main className="mx-auto max-w-[900px] px-5 md:px-8 lg:px-10 py-6">
         <div className="mb-6">
           <h1 className="text-2xl font-bold">Bygg din CV</h1>
           <p className="mt-2 text-lg text-muted-foreground">

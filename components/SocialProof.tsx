@@ -3,10 +3,10 @@
 import { motion } from "framer-motion";
 
 const stats = [
-  { value: "2000+", label: "SØKNADER GENERERT" },
-  { value: "<2 min", label: "GJENNOMSNITTLIG TID" },
-  { value: "5", label: "PROFESJONELLE CV-MALER" },
-  { value: "98%", label: "FORNØYDE BRUKERE" },
+  { value: "10", label: "CV-MALER" },
+  { value: "<2 min", label: "GENERERINGSTID" },
+  { value: "3", label: "BREVMALER" },
+  { value: "PDF & Word", label: "EKSPORTFORMATER" },
 ];
 
 export default function SocialProof() {
@@ -14,8 +14,8 @@ export default function SocialProof() {
     <section className="bg-secondary px-5 md:px-8 lg:px-10 py-16 md:py-20 lg:py-28 border-y border-foreground/5">
       <div className="mx-auto max-w-[1400px]">
         <div className="mb-16">
-          <span className="industrial-label mb-4 block">/ TALLENE SNAKKER</span>
-          <h2 className="sr-only">Statistikk og sosiale bevis</h2>
+          <span className="industrial-label mb-4 block">/ HVA DU FÅR</span>
+          <h2 className="sr-only">Produktegenskaper</h2>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-0">

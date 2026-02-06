@@ -21,23 +21,6 @@ export default function Footer() {
             <p className="text-sm text-foreground/40 font-bold max-w-sm leading-tight mb-4 md:mb-6">
               KI-drevet verktøy som hjelper deg skrive bedre jobbsøknader, raskere.
             </p>
-            <div className="flex gap-6">
-              {[
-                { label: "FACEBOOK", href: "https://facebook.com/jobbstart" },
-                { label: "LINKEDIN", href: "https://linkedin.com/company/jobbstart" },
-                { label: "INSTAGRAM", href: "https://instagram.com/jobbstart" },
-              ].map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="industrial-label hover:opacity-100 hover:text-primary transition-all underline decoration-foreground/10"
-                >
-                  {social.label}
-                </a>
-              ))}
-            </div>
           </div>
 
           <div>

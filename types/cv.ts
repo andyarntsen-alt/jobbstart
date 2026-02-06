@@ -4,6 +4,7 @@ export interface CVPersonal {
   phone: string;
   address?: string;
   linkedin?: string;
+  photo?: string;
 }
 
 export interface CVExperience {
@@ -34,7 +35,12 @@ export type CVTemplate =
   | "oslo"
   | "eksekutiv"
   | "kreativ"
-  | "kompakt";
+  | "kompakt"
+  | "tidslinje"
+  | "fjord"
+  | "stavanger"
+  | "diplomatisk"
+  | "bergen";
 
 export interface CVData {
   personal: CVPersonal;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Download,
+  Camera,
+  X,
 } from "lucide-react";
 import ExperienceInput from "./ExperienceInput";
 import EducationInput from "./EducationInput";
@@ -60,6 +62,32 @@ function emptyEducation(): CVEducation {
   return { id: createId(), degree: "", school: "", year: "" };
 }
 
+function resizeImage(file: File, maxSize: number): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let { width, height } = img;
+        if (width > maxSize || height > maxSize) {
+          const ratio = Math.min(maxSize / width, maxSize / height);
+          width *= ratio;
+          height *= ratio;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d")!.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/jpeg", 0.8));
+      };
+      img.onerror = () => reject(new Error("Kunne ikke lese bildet"));
+      img.src = e.target!.result as string;
+    };
+    reader.onerror = () => reject(new Error("Kunne ikke lese filen"));
+    reader.readAsDataURL(file);
+  });
+}
+
 const defaultData: CVData = {
   personal: { name: "", email: "", phone: "", address: "", linkedin: "" },
   summary: "",
@@ -74,6 +102,8 @@ export default function CVForm() {
   const [data, setData] = useState<CVData>(defaultData);
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
   const [summaryError, setSummaryError] = useState("");
+  const [photoError, setPhotoError] = useState("");
+  const stepRef = useRef<HTMLDivElement>(null);
 
   // Load from localStorage
   useEffect(() => {
@@ -84,6 +114,11 @@ export default function CVForm() {
       // Ignore parse errors
     }
   }, []);
+
+  // Focus step content on navigation
+  useEffect(() => {
+    stepRef.current?.focus();
+  }, [step]);
 
   // Save to localStorage on data change
   const saveToStorage = useCallback((d: CVData) => {
@@ -106,6 +141,28 @@ export default function CVForm() {
     updateData({
       personal: { ...data.personal, [field]: value },
     });
+  }
+
+  async function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+      setPhotoError("Bildet er for stort (maks 10 MB)");
+      e.target.value = "";
+      return;
+    }
+    setPhotoError("");
+    try {
+      const base64 = await resizeImage(file, 400);
+      updateData({ personal: { ...data.personal, photo: base64 } });
+    } catch {
+      setPhotoError("Kunne ikke lese bildet. Prøv et annet format.");
+    }
+    e.target.value = "";
+  }
+
+  function removePhoto() {
+    updateData({ personal: { ...data.personal, photo: undefined } });
   }
 
   function updateExperience(index: number, updated: CVExperience) {
@@ -209,7 +266,7 @@ export default function CVForm() {
       </div>
 
       {/* Step content */}
-      <div>
+      <div ref={stepRef} tabIndex={-1} className="outline-none">
         {/* Step 1: Personal info */}
         {step === 0 && (
           <div className="space-y-4">
@@ -221,6 +278,7 @@ export default function CVForm() {
                   value={data.personal.name}
                   onChange={(e) => updatePersonal("name", e.target.value)}
                   placeholder="Ola Nordmann"
+                  autoComplete="name"
                 />
               </div>
               <div>
@@ -230,6 +288,7 @@ export default function CVForm() {
                   value={data.personal.email}
                   onChange={(e) => updatePersonal("email", e.target.value)}
                   placeholder="ola@example.com"
+                  autoComplete="email"
                 />
               </div>
               <div>
@@ -238,6 +297,7 @@ export default function CVForm() {
                   value={data.personal.phone}
                   onChange={(e) => updatePersonal("phone", e.target.value)}
                   placeholder="+47 900 00 000"
+                  autoComplete="tel"
                 />
               </div>
               <div>
@@ -256,6 +316,46 @@ export default function CVForm() {
                 onChange={(e) => updatePersonal("linkedin", e.target.value)}
                 placeholder="linkedin.com/in/olanordmann"
               />
+            </div>
+            <div>
+              <Label className="text-xs">Profilbilde (valgfritt)</Label>
+              <div className="mt-1.5 flex items-center gap-4">
+                {data.personal.photo ? (
+                  <div className="relative">
+                    <img
+                      src={data.personal.photo}
+                      alt="Profilbilde"
+                      className="h-16 w-16 rounded-full object-cover border border-border"
+                    />
+                    <button
+                      type="button"
+                      onClick={removePhoto}
+                      className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-foreground text-background hover:bg-foreground/80 transition-colors"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ) : (
+                  <label className="flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border border-dashed border-foreground/20 hover:border-foreground/40 transition-colors">
+                    <Camera className="h-5 w-5 text-muted-foreground" />
+                    <span className="sr-only">Last opp profilbilde</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhotoUpload}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+                <p className="text-[11px] text-muted-foreground">
+                  Maks 400×400px. Vises i CV-malen.
+                </p>
+              </div>
+              {photoError && (
+                <p className="text-[11px] text-red-600" role="alert">
+                  {photoError}
+                </p>
+              )}
             </div>
           </div>
         )}

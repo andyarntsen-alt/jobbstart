@@ -79,7 +79,7 @@
   }
 
   .industrial-label {
-    @apply text-[11px] uppercase tracking-[0.2em] opacity-50;
+    @apply text-[11px] uppercase tracking-[0.2em] opacity-60;
   }
 
   .bg-grid-white {

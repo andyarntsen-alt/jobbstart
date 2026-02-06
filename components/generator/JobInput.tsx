@@ -190,8 +190,8 @@ export default function JobInput({
         )}
       </div>
 
-      <div className="space-y-3">
-        <Label className="text-base font-semibold">Kontaktinfo (valgfritt)</Label>
+      <fieldset className="space-y-3">
+        <legend className="text-base font-semibold">Kontaktinfo (valgfritt)</legend>
         <div className="grid gap-3 sm:grid-cols-3">
           <div>
             <Input
@@ -201,9 +201,11 @@ export default function JobInput({
                 onContactInfoChange({ ...contactInfo, name: e.target.value })
               }
               onBlur={(e) => validateContact("name", e.target.value)}
+              autoComplete="name"
+              aria-describedby={contactErrors.name ? "contact-name-error" : undefined}
             />
             {contactErrors.name && (
-              <p className="mt-1 text-[11px] text-red-600">{contactErrors.name}</p>
+              <p id="contact-name-error" className="mt-1 text-[11px] text-red-600" role="alert">{contactErrors.name}</p>
             )}
           </div>
           <div>
@@ -214,9 +216,11 @@ export default function JobInput({
                 onContactInfoChange({ ...contactInfo, phone: e.target.value })
               }
               onBlur={(e) => validateContact("phone", e.target.value)}
+              autoComplete="tel"
+              aria-describedby={contactErrors.phone ? "contact-phone-error" : undefined}
             />
             {contactErrors.phone && (
-              <p className="mt-1 text-[11px] text-red-600">{contactErrors.phone}</p>
+              <p id="contact-phone-error" className="mt-1 text-[11px] text-red-600" role="alert">{contactErrors.phone}</p>
             )}
           </div>
           <div>
@@ -228,13 +232,15 @@ export default function JobInput({
                 onContactInfoChange({ ...contactInfo, email: e.target.value })
               }
               onBlur={(e) => validateContact("email", e.target.value)}
+              autoComplete="email"
+              aria-describedby={contactErrors.email ? "contact-email-error" : undefined}
             />
             {contactErrors.email && (
-              <p className="mt-1 text-[11px] text-red-600">{contactErrors.email}</p>
+              <p id="contact-email-error" className="mt-1 text-[11px] text-red-600" role="alert">{contactErrors.email}</p>
             )}
           </div>
         </div>
-      </div>
+      </fieldset>
     </div>
   );
 }

@@ -132,7 +132,7 @@ export default function GeneratorPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-black/5 bg-background">
-        <div className="mx-auto flex h-[80px] max-w-[1400px] items-center justify-between px-10">
+        <div className="mx-auto flex h-[80px] max-w-[1400px] items-center justify-between px-5 md:px-8 lg:px-10">
           <Link href="/">
             <span className="text-2xl font-extrabold tracking-tight">
               JOBBSTART
@@ -147,7 +147,7 @@ export default function GeneratorPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1400px] px-10 py-12">
+      <main className="mx-auto max-w-[1400px] px-5 md:px-8 lg:px-10 py-12">
         <div className="mb-10">
           <h1 className="text-4xl font-bold">Generer søknad</h1>
           <p className="mt-2 text-lg text-muted-foreground">
@@ -215,7 +215,7 @@ export default function GeneratorPage() {
                 />
                 <CrossSellBanner
                   label="/ TRENGER DU OGSÅ EN CV?"
-                  description="Bygg en profesjonell CV med KI-drevne forslag og 5 norske maler."
+                  description="Bygg en profesjonell CV med KI-drevne forslag og 10 norske maler."
                   ctaText="Bygg CV"
                   href="/cv"
                 />

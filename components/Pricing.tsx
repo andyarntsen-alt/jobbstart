@@ -28,7 +28,7 @@ const plans = [
       "5 søknader",
       "CV-bygger inkludert",
       "KI-generert CV-sammendrag",
-      "Alle brevmaler + 5 CV-maler",
+      "Alle brevmaler + 10 CV-maler",
       "Ferdig på under 2 min",
       "Prioritert behandling",
     ],

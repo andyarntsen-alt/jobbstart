@@ -9,7 +9,7 @@ export const siteConfig = {
     template: "%s | JobbStart",
   },
   description:
-    "Lag profesjonelle jobbsøknader og CV-er på under 2 minutter med KI. Tilpasset norsk arbeidsliv med FINN.no-integrasjon, PSTAR-metoden og 5 CV-maler. Fra kr 49.",
+    "Lag profesjonelle jobbsøknader og CV-er på under 2 minutter med KI. Tilpasset norsk arbeidsliv med FINN.no-integrasjon, PSTAR-metoden og 10 CV-maler. Fra kr 49.",
 
   twitterHandle: "@jobbstart",
 
@@ -17,12 +17,6 @@ export const siteConfig = {
   address: {
     city: "Oslo",
     country: "Norge",
-  },
-
-  social: {
-    facebook: "https://facebook.com/jobbstart",
-    linkedin: "https://linkedin.com/company/jobbstart",
-    instagram: "https://instagram.com/jobbstart",
   },
 
   creator: "JobbStart",
@@ -34,7 +28,7 @@ export const pageSeo = {
     title:
       "JobbStart – KI-drevet søknad og CV-generator for norsk arbeidsliv",
     description:
-      "Lag profesjonelle jobbsøknader og CV-er på under 2 minutter med KI. Tilpasset norsk arbeidsliv med FINN.no-integrasjon, PSTAR-metoden og 5 CV-maler. Fra kr 49.",
+      "Lag profesjonelle jobbsøknader og CV-er på under 2 minutter med KI. Tilpasset norsk arbeidsliv med FINN.no-integrasjon, PSTAR-metoden og 10 CV-maler. Fra kr 49.",
   },
   generator: {
     title: "Lag jobbsøknad med KI",
@@ -44,6 +38,6 @@ export const pageSeo = {
   cv: {
     title: "Bygg profesjonell CV med KI",
     description:
-      "Lag en profesjonell CV med KI-drevne forslag. 6-stegs veiviser, automatisk sammendrag, 5 norske maler (Nordisk, Oslo, Eksekutiv, Kreativ, Kompakt). Last ned som PDF.",
+      "Lag en profesjonell CV med KI-drevne forslag. 6-stegs veiviser, automatisk sammendrag, 10 profesjonelle maler tilpasset norsk arbeidsmarked. Last ned som PDF.",
   },
 } as const;

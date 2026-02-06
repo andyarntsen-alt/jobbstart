@@ -7,6 +7,11 @@ import {
   Crown,
   Palette,
   AlignJustify,
+  GitBranch,
+  Mountain,
+  RectangleHorizontal,
+  FileText,
+  Rows3,
 } from "lucide-react";
 
 const templates: {
@@ -44,6 +49,36 @@ const templates: {
     label: "Kompakt",
     description: "To-kolonne, grå striper",
     icon: AlignJustify,
+  },
+  {
+    value: "tidslinje",
+    label: "Tidslinje",
+    description: "Tidslinje med sirkelnoder",
+    icon: GitBranch,
+  },
+  {
+    value: "fjord",
+    label: "Fjord",
+    description: "Varm sidebar, magasin-stil",
+    icon: Mountain,
+  },
+  {
+    value: "stavanger",
+    label: "Stavanger",
+    description: "Stort banner, korall-aksent",
+    icon: RectangleHorizontal,
+  },
+  {
+    value: "diplomatisk",
+    label: "Diplomatisk",
+    description: "Formell, skrivemaskin-stil",
+    icon: FileText,
+  },
+  {
+    value: "bergen",
+    label: "Bergen",
+    description: "Gradient-header, tabell",
+    icon: Rows3,
   },
 ];
 

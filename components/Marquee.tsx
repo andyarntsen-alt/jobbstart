@@ -8,14 +8,14 @@ export default function Marquee() {
     "PDF & WORD EKSPORT",
     "FRA KR 49,-",
     "KI-DREVET",
-    "5 CV-MALER",
+    "10 CV-MALER",
     "FINN.NO-INTEGRASJON",
   ];
 
   return (
     <div
       role="marquee"
-      aria-label="Nøkkelegenskaper: Ferdig på 2 minutter, PSTAR-metoden, Tilpasset norsk arbeidsliv, PDF og Word eksport, Fra kr 49, KI-drevet, 5 CV-maler, FINN.no-integrasjon"
+      aria-label="Nøkkelegenskaper: Ferdig på 2 minutter, PSTAR-metoden, Tilpasset norsk arbeidsliv, PDF og Word eksport, Fra kr 49, KI-drevet, 10 CV-maler, FINN.no-integrasjon"
       className="-mt-6 md:-mt-10 bg-secondary py-4 md:py-5 overflow-hidden whitespace-nowrap border-y border-foreground/5 relative z-20"
     >
       <div className="flex w-max animate-marquee" aria-hidden="true">

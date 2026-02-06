@@ -17,12 +17,12 @@ const faqs = [
   {
     question: "Hva koster det å bruke JobbStart?",
     answer:
-      "JobbStart tilbyr tre pakker: Enkel (49 kr for 1 søknad), Standard (149 kr for 5 søknader + CV-bygger), og Ubegrenset (249 kr for 20 søknader + full CV med KI-forbedring).",
+      "JobbStart tilbyr tre pakker: Enkel (49 kr for 1 søknad), Standard (149 kr for 5 søknader + CV-bygger), og Max (249 kr for 20 søknader + full CV med KI-forbedring).",
   },
   {
     question: "Kan jeg lage CV med JobbStart?",
     answer:
-      "Ja! CV-byggeren har en 6-stegs veiviser med auto-lagring, KI-generert sammendrag, KI-forbedrede erfaringsbeskrivelser, og 5 profesjonelle PDF-maler tilpasset norsk arbeidsmarked.",
+      "Ja! CV-byggeren har en 6-stegs veiviser med auto-lagring, KI-generert sammendrag, KI-forbedrede erfaringsbeskrivelser, og 10 profesjonelle PDF-maler tilpasset norsk arbeidsmarked.",
   },
   {
     question: "Støtter JobbStart FINN.no?",

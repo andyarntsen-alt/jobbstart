@@ -69,7 +69,7 @@ export default function Hero() {
               {[
                 { label: "LEVERING", value: "Under 2 min", icon: Clock },
                 { label: "EKSPORT", value: "PDF & Word", icon: FileText },
-                { label: "CV-MALER", value: "5 stk", icon: Layout },
+                { label: "CV-MALER", value: "10 stk", icon: Layout },
               ].map((stat) => (
                 <div key={stat.label}>
                   <div className="flex items-center gap-2 mb-1">
