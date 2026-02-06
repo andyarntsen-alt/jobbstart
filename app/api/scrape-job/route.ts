@@ -28,6 +28,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Domain whitelist — kun FINN.no tillatt
+    try {
+      const parsedUrl = new URL(url.trim());
+      const hostname = parsedUrl.hostname.replace(/^www\./, "");
+      if (hostname !== "finn.no") {
+        return NextResponse.json(
+          { error: "Kun FINN.no-lenker er støttet. Lim inn en lenke fra finn.no/job/." },
+          { status: 400 }
+        );
+      }
+    } catch {
+      return NextResponse.json(
+        { error: "Ugyldig URL-format." },
+        { status: 400 }
+      );
+    }
+
     const finnId = extractFinnId(url.trim());
     if (!finnId) {
       return NextResponse.json(

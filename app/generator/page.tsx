@@ -10,6 +10,8 @@ import GeneratedLetter from "@/components/generator/GeneratedLetter";
 import DownloadButtons from "@/components/generator/DownloadButtons";
 import LayoutSelector from "@/components/generator/LayoutSelector";
 import GeneratorSeoContent from "@/components/generator/GeneratorSeoContent";
+import UpgradeDialog from "@/components/generator/UpgradeDialog";
+import CrossSellBanner from "@/components/CrossSellBanner";
 import type { TemplateStyle, ContactInfo, ExportLayout } from "@/types/application";
 
 export default function GeneratorPage() {
@@ -32,6 +34,7 @@ export default function GeneratorPage() {
   const [jobTitle, setJobTitle] = useState("");
   const [isImprovingBackground, setIsImprovingBackground] = useState(false);
   const [improveError, setImproveError] = useState("");
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   async function handleImproveBackground() {
     setImproveError("");
@@ -208,11 +211,13 @@ export default function GeneratorPage() {
                   contactInfo={contactInfo}
                   layout={layout}
                   jobTitle={jobTitle || undefined}
-                  onUpgradeClick={() => {
-                    alert(
-                      "Stripe-betaling kommer snart! Oppgrader til Enkel (49 kr) eller Pro (199 kr/mnd) for PDF/Word-nedlasting."
-                    );
-                  }}
+                  onUpgradeClick={() => setUpgradeOpen(true)}
+                />
+                <CrossSellBanner
+                  label="/ TRENGER DU OGSÅ EN CV?"
+                  description="Bygg en profesjonell CV med KI-drevne forslag og 5 norske maler."
+                  ctaText="Bygg CV"
+                  href="/cv"
                 />
               </div>
             ) : (
@@ -233,6 +238,7 @@ export default function GeneratorPage() {
       </main>
 
       <GeneratorSeoContent />
+      <UpgradeDialog open={upgradeOpen} onOpenChange={setUpgradeOpen} />
     </div>
   );
 }

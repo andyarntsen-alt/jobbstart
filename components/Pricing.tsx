@@ -36,7 +36,7 @@ const plans = [
     icon: Zap,
   },
   {
-    name: "UBEGRENSET",
+    name: "MAX",
     price: "249",
     description: "Full tilgang til søknad og CV for aktive jobbsøkere.",
     features: [

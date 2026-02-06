@@ -39,8 +39,46 @@ export default function JobInput({
   improveError,
 }: JobInputProps) {
   const [finnUrl, setFinnUrl] = useState("");
+  const [contactErrors, setContactErrors] = useState<{
+    name?: string;
+    email?: string;
+    phone?: string;
+  }>({});
 
   const isFinnUrl = FINN_URL_PATTERN.test(finnUrl.trim());
+
+  function validateContact(field: keyof ContactInfo, value: string) {
+    if (!value.trim()) {
+      setContactErrors((prev) => ({ ...prev, [field]: undefined }));
+      return;
+    }
+    switch (field) {
+      case "email": {
+        const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        setContactErrors((prev) => ({
+          ...prev,
+          email: valid ? undefined : "Ugyldig e-postadresse",
+        }));
+        break;
+      }
+      case "phone": {
+        const cleaned = value.replace(/[\s\-+]/g, "");
+        const valid = /^(47)?\d{8}$/.test(cleaned);
+        setContactErrors((prev) => ({
+          ...prev,
+          phone: valid ? undefined : "Oppgi et gyldig telefonnummer (8 siffer)",
+        }));
+        break;
+      }
+      case "name": {
+        setContactErrors((prev) => ({
+          ...prev,
+          name: value.trim().length < 2 ? "Navn må være minst 2 tegn" : undefined,
+        }));
+        break;
+      }
+    }
+  }
 
   function handleUrlChange(value: string) {
     setFinnUrl(value);
@@ -155,28 +193,46 @@ export default function JobInput({
       <div className="space-y-3">
         <Label className="text-base font-semibold">Kontaktinfo (valgfritt)</Label>
         <div className="grid gap-3 sm:grid-cols-3">
-          <Input
-            placeholder="Fullt navn"
-            value={contactInfo.name}
-            onChange={(e) =>
-              onContactInfoChange({ ...contactInfo, name: e.target.value })
-            }
-          />
-          <Input
-            placeholder="Telefon"
-            value={contactInfo.phone}
-            onChange={(e) =>
-              onContactInfoChange({ ...contactInfo, phone: e.target.value })
-            }
-          />
-          <Input
-            placeholder="E-post"
-            type="email"
-            value={contactInfo.email}
-            onChange={(e) =>
-              onContactInfoChange({ ...contactInfo, email: e.target.value })
-            }
-          />
+          <div>
+            <Input
+              placeholder="Fullt navn"
+              value={contactInfo.name}
+              onChange={(e) =>
+                onContactInfoChange({ ...contactInfo, name: e.target.value })
+              }
+              onBlur={(e) => validateContact("name", e.target.value)}
+            />
+            {contactErrors.name && (
+              <p className="mt-1 text-[11px] text-red-600">{contactErrors.name}</p>
+            )}
+          </div>
+          <div>
+            <Input
+              placeholder="Telefon"
+              value={contactInfo.phone}
+              onChange={(e) =>
+                onContactInfoChange({ ...contactInfo, phone: e.target.value })
+              }
+              onBlur={(e) => validateContact("phone", e.target.value)}
+            />
+            {contactErrors.phone && (
+              <p className="mt-1 text-[11px] text-red-600">{contactErrors.phone}</p>
+            )}
+          </div>
+          <div>
+            <Input
+              placeholder="E-post"
+              type="email"
+              value={contactInfo.email}
+              onChange={(e) =>
+                onContactInfoChange({ ...contactInfo, email: e.target.value })
+              }
+              onBlur={(e) => validateContact("email", e.target.value)}
+            />
+            {contactErrors.email && (
+              <p className="mt-1 text-[11px] text-red-600">{contactErrors.email}</p>
+            )}
+          </div>
         </div>
       </div>
     </div>

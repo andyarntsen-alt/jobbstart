@@ -18,6 +18,7 @@ import EducationInput from "./EducationInput";
 import SkillsInput from "./SkillsInput";
 import CVTemplateSelector from "./CVTemplateSelector";
 import CVPreview from "./CVPreview";
+import CrossSellBanner from "@/components/CrossSellBanner";
 import { generateCVPdf } from "@/lib/cv-pdf-generator";
 import type {
   CVData,
@@ -375,6 +376,12 @@ export default function CVForm() {
               <Download className="h-4 w-4" />
               Last ned PDF
             </Button>
+            <CrossSellBanner
+              label="/ SKAL DU SØKE PÅ EN JOBB?"
+              description="Generer en skreddersydd jobbsøknad med KI på under 2 minutter."
+              ctaText="Lag søknad"
+              href="/generator"
+            />
           </div>
         )}
       </div>
