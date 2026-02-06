@@ -192,7 +192,7 @@ export default function GeneratorPage() {
             </Button>
           </div>
 
-          <div>
+          <div className="lg:sticky lg:top-8 lg:self-start">
             {generatedText ? (
               <div className="space-y-6">
                 <GeneratedLetter

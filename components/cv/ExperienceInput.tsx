@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Loader2, Sparkles, Trash2 } from "lucide-react";
+import { Loader2, Sparkles, Trash2, Check } from "lucide-react";
 import type { CVExperience } from "@/types/cv";
 
 interface ExperienceInputProps {
@@ -139,13 +139,28 @@ export default function ExperienceInput({
       )}
 
       {experience.bullets.length > 0 && (
-        <ul className="space-y-1 border-l-2 border-foreground/10 pl-3">
-          {experience.bullets.map((bullet, i) => (
-            <li key={i} className="text-sm text-foreground/80">
-              {bullet}
-            </li>
-          ))}
-        </ul>
+        <div className="space-y-2">
+          <ul className="space-y-1 border-l-2 border-foreground/10 pl-3">
+            {experience.bullets.map((bullet, i) => (
+              <li key={i} className="text-sm text-foreground/80">
+                {bullet}
+              </li>
+            ))}
+          </ul>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              const text = experience.bullets.map((b) => `• ${b}`).join("\n");
+              onChange({ ...experience, description: text, bullets: [] });
+            }}
+            className="gap-1.5 h-7 text-[11px] font-semibold uppercase tracking-wider"
+          >
+            <Check className="h-3 w-3" />
+            Bruk
+          </Button>
+        </div>
       )}
     </div>
   );
