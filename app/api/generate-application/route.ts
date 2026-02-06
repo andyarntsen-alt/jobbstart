@@ -1,33 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import getGroqClient from "@/lib/groq";
 import { buildSystemPrompt, buildUserPrompt } from "@/lib/prompts";
+import { rateLimit } from "@/lib/rate-limit";
 import type { TemplateStyle } from "@/types/application";
-
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-const MAX_FREE_PER_DAY = 3;
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, {
-      count: 1,
-      resetAt: now + 24 * 60 * 60 * 1000,
-    });
-    return true;
-  }
-
-  if (entry.count >= MAX_FREE_PER_DAY) {
-    return false;
-  }
-
-  entry.count++;
-  return true;
-}
 
 export async function POST(req: NextRequest) {
   try {
+    const { success } = await rateLimit(req, "ai");
+    if (!success) {
+      return NextResponse.json(
+        { error: "For mange forespørsler i dag. Prøv igjen i morgen." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const { jobDescription, userBackground, template, contactInfo } = body;
 
@@ -45,6 +31,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (typeof userBackground === "string" && userBackground.length > 3000) {
+      return NextResponse.json(
+        { error: "Bakgrunnsteksten er for lang (maks 3000 tegn)" },
+        { status: 400 }
+      );
+    }
+
     const validTemplates: TemplateStyle[] = [
       "konservativ",
       "moderne",
@@ -53,18 +46,6 @@ export async function POST(req: NextRequest) {
     const selectedTemplate: TemplateStyle = validTemplates.includes(template)
       ? template
       : "moderne";
-
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-    if (!checkRateLimit(ip)) {
-      return NextResponse.json(
-        {
-          error:
-            "Du har brukt opp dine gratis søknader for i dag. Oppgrader til Enkel eller Pro for flere.",
-        },
-        { status: 429 }
-      );
-    }
 
     const completion = await getGroqClient().chat.completions.create({
       model: "llama-3.3-70b-versatile",

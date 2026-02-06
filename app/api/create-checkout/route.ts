@@ -1,8 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import getStripe from "@/lib/stripe";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
   try {
+    const { success } = await rateLimit(req, "checkout");
+    if (!success) {
+      return NextResponse.json(
+        { error: "For mange forespørsler. Prøv igjen senere." },
+        { status: 429 }
+      );
+    }
+
     const { plan } = await req.json();
     const origin = req.headers.get("origin") || "http://localhost:3000";
 

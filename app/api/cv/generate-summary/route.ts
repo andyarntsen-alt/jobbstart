@@ -4,30 +4,19 @@ import {
   buildSummarySystemPrompt,
   buildSummaryUserPrompt,
 } from "@/lib/cv-prompts";
+import { rateLimit } from "@/lib/rate-limit";
 import type { CVExperience } from "@/types/cv";
-
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-const MAX_PER_DAY = 10;
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, {
-      count: 1,
-      resetAt: now + 24 * 60 * 60 * 1000,
-    });
-    return true;
-  }
-
-  if (entry.count >= MAX_PER_DAY) return false;
-  entry.count++;
-  return true;
-}
 
 export async function POST(req: NextRequest) {
   try {
+    const { success } = await rateLimit(req, "ai");
+    if (!success) {
+      return NextResponse.json(
+        { error: "For mange forespørsler i dag. Prøv igjen i morgen." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const { experiences } = body as { experiences: CVExperience[] };
 
@@ -38,12 +27,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-    if (!checkRateLimit(ip)) {
+    if (experiences.length > 10) {
       return NextResponse.json(
-        { error: "For mange forespørsler i dag. Prøv igjen i morgen." },
-        { status: 429 }
+        { error: "Maks 10 erfaringer" },
+        { status: 400 }
       );
     }
 

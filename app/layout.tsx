@@ -65,11 +65,6 @@ export const metadata: Metadata = {
     canonical: "/",
   },
 
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
-
   manifest: "/manifest.json",
 
   category: "technology",

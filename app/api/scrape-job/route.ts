@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as cheerio from "cheerio";
 import { FINN_URL_PATTERN } from "@/lib/constants";
+import { rateLimit } from "@/lib/rate-limit";
 
 function extractFinnId(url: string): string | null {
   const match = url.match(FINN_URL_PATTERN);
@@ -9,6 +10,14 @@ function extractFinnId(url: string): string | null {
 
 export async function POST(req: NextRequest) {
   try {
+    const { success } = await rateLimit(req, "scrape");
+    if (!success) {
+      return NextResponse.json(
+        { error: "For mange forespørsler. Prøv igjen senere." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const { url } = body;
 
