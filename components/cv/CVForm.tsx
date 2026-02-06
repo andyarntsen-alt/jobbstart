@@ -30,10 +30,10 @@ import type {
 
 const STEPS = [
   "Personlig",
-  "Sammendrag",
   "Erfaring",
   "Utdanning",
   "Kompetanser",
+  "Sammendrag",
   "Mal & Last ned",
 ];
 
@@ -259,8 +259,75 @@ export default function CVForm() {
           </div>
         )}
 
-        {/* Step 2: Summary */}
+        {/* Step 2: Experience */}
         {step === 1 && (
+          <div className="space-y-4">
+            <h2 className="text-lg font-bold">Arbeidserfaring</h2>
+            {data.experience.map((exp, i) => (
+              <ExperienceInput
+                key={exp.id}
+                experience={exp}
+                onChange={(updated) => updateExperience(i, updated)}
+                onRemove={() => removeExperience(i)}
+              />
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() =>
+                updateData({
+                  experience: [...data.experience, emptyExperience()],
+                })
+              }
+              className="gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              Legg til erfaring
+            </Button>
+          </div>
+        )}
+
+        {/* Step 3: Education */}
+        {step === 2 && (
+          <div className="space-y-4">
+            <h2 className="text-lg font-bold">Utdanning</h2>
+            {data.education.map((edu, i) => (
+              <EducationInput
+                key={edu.id}
+                education={edu}
+                onChange={(updated) => updateEducation(i, updated)}
+                onRemove={() => removeEducation(i)}
+              />
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() =>
+                updateData({
+                  education: [...data.education, emptyEducation()],
+                })
+              }
+              className="gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              Legg til utdanning
+            </Button>
+          </div>
+        )}
+
+        {/* Step 4: Skills */}
+        {step === 3 && (
+          <div className="space-y-4">
+            <h2 className="text-lg font-bold">Kompetanser</h2>
+            <SkillsInput
+              skills={data.skills}
+              onChange={(updated) => updateData({ skills: updated })}
+            />
+          </div>
+        )}
+
+        {/* Step 5: Summary */}
+        {step === 4 && (
           <div className="space-y-4">
             <h2 className="text-lg font-bold">Profilsammendrag</h2>
             <p className="text-sm text-muted-foreground">
@@ -289,77 +356,6 @@ export default function CVForm() {
             {summaryError && (
               <p className="text-[11px] text-red-600">{summaryError}</p>
             )}
-            <p className="text-[11px] text-muted-foreground">
-              Tips: Fyll ut erfaring først (steg 3), så kan KI generere et bedre
-              sammendrag basert på din bakgrunn.
-            </p>
-          </div>
-        )}
-
-        {/* Step 3: Experience */}
-        {step === 2 && (
-          <div className="space-y-4">
-            <h2 className="text-lg font-bold">Arbeidserfaring</h2>
-            {data.experience.map((exp, i) => (
-              <ExperienceInput
-                key={exp.id}
-                experience={exp}
-                onChange={(updated) => updateExperience(i, updated)}
-                onRemove={() => removeExperience(i)}
-              />
-            ))}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() =>
-                updateData({
-                  experience: [...data.experience, emptyExperience()],
-                })
-              }
-              className="gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              Legg til erfaring
-            </Button>
-          </div>
-        )}
-
-        {/* Step 4: Education */}
-        {step === 3 && (
-          <div className="space-y-4">
-            <h2 className="text-lg font-bold">Utdanning</h2>
-            {data.education.map((edu, i) => (
-              <EducationInput
-                key={edu.id}
-                education={edu}
-                onChange={(updated) => updateEducation(i, updated)}
-                onRemove={() => removeEducation(i)}
-              />
-            ))}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() =>
-                updateData({
-                  education: [...data.education, emptyEducation()],
-                })
-              }
-              className="gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              Legg til utdanning
-            </Button>
-          </div>
-        )}
-
-        {/* Step 5: Skills */}
-        {step === 4 && (
-          <div className="space-y-4">
-            <h2 className="text-lg font-bold">Kompetanser</h2>
-            <SkillsInput
-              skills={data.skills}
-              onChange={(updated) => updateData({ skills: updated })}
-            />
           </div>
         )}
 

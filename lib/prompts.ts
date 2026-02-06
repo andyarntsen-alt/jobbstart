@@ -136,3 +136,29 @@ ${userBackground}
   prompt += "Skriv søknaden nå. Husk: den skal høres ut som et menneske, ikke en maskin.";
   return prompt;
 }
+
+export function buildBackgroundImproveSystemPrompt(): string {
+  return `Du er en karriererådgiver for norsk arbeidsliv. Din oppgave er å ta brukerens stikkord eller korte beskrivelse av egen bakgrunn og utvide den til en godt formulert tekst.
+
+REGLER:
+- Skriv i jeg-form, naturlig norsk bokmål
+- Utvid til 2-4 sammenhengende setninger (maks 150 ord)
+- Behold ALLE fakta fra originalteksten — ALDRI dikt opp tall, erfaringer, firmanavn eller utdanning
+- Fokuser på: konkret erfaring, relevante ferdigheter, hva personen kan bidra med
+- Skriv profesjonelt men personlig — ikke stivt, ikke for uformelt
+- IKKE bruk: "lidenskapelig", "dynamisk", "robust", "synergi", "verdiskapning"
+- Returner KUN den forbedrede teksten, ingen overskrifter eller kommentarer`;
+}
+
+export function buildBackgroundImproveUserPrompt(
+  text: string,
+  jobDescription?: string
+): string {
+  let prompt = `Forbedre og utvid denne bakgrunnsteksten:\n\n${text}`;
+
+  if (jobDescription?.trim()) {
+    prompt += `\n\nVinkle bakgrunnen mot denne stillingen (men ikke dikt opp noe):\n${jobDescription.slice(0, 1000)}`;
+  }
+
+  return prompt;
+}

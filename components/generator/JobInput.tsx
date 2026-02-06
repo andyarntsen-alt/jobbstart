@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Loader2, Link as LinkIcon } from "lucide-react";
+import { Loader2, Link as LinkIcon, Sparkles } from "lucide-react";
 import type { ContactInfo } from "@/types/application";
 import { FINN_URL_PATTERN } from "@/lib/constants";
 
@@ -19,6 +19,9 @@ interface JobInputProps {
   onFetchFromUrl: (url: string) => Promise<void>;
   isFetchingUrl: boolean;
   urlError: string;
+  onImproveBackground: () => void;
+  isImprovingBackground: boolean;
+  improveError: string;
 }
 
 export default function JobInput({
@@ -31,6 +34,9 @@ export default function JobInput({
   onFetchFromUrl,
   isFetchingUrl,
   urlError,
+  onImproveBackground,
+  isImprovingBackground,
+  improveError,
 }: JobInputProps) {
   const [finnUrl, setFinnUrl] = useState("");
 
@@ -113,10 +119,37 @@ export default function JobInput({
           value={userBackground}
           onChange={(e) => onUserBackgroundChange(e.target.value)}
           className="min-h-[120px] resize-y"
+          disabled={isImprovingBackground}
         />
-        <p className="mt-1.5 text-xs text-muted-foreground">
-          Jo mer du skriver, jo bedre blir søknaden tilpasset deg.
-        </p>
+        <div className="mt-1.5 flex items-center justify-between">
+          <p className="text-xs text-muted-foreground">
+            Jo mer du skriver, jo bedre blir søknaden tilpasset deg.
+          </p>
+          {userBackground.trim().length >= 10 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onImproveBackground}
+              disabled={isImprovingBackground}
+              className="h-7 gap-1.5 text-[11px] font-semibold uppercase tracking-wider"
+            >
+              {isImprovingBackground ? (
+                <>
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                  Forbedrer...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="h-3 w-3" />
+                  Forbedre med KI
+                </>
+              )}
+            </Button>
+          )}
+        </div>
+        {improveError && (
+          <p className="mt-1 text-xs font-medium text-red-600">{improveError}</p>
+        )}
       </div>
 
       <div className="space-y-3">

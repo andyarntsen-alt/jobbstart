@@ -30,6 +30,37 @@ export default function GeneratorPage() {
   const [urlError, setUrlError] = useState("");
   const [layout, setLayout] = useState<ExportLayout>("profesjonell");
   const [jobTitle, setJobTitle] = useState("");
+  const [isImprovingBackground, setIsImprovingBackground] = useState(false);
+  const [improveError, setImproveError] = useState("");
+
+  async function handleImproveBackground() {
+    setImproveError("");
+    setIsImprovingBackground(true);
+
+    try {
+      const res = await fetch("/api/improve-background", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: userBackground,
+          jobDescription: jobDescription || undefined,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setImproveError(data.error || "Kunne ikke forbedre teksten.");
+        return;
+      }
+
+      setUserBackground(data.improved);
+    } catch {
+      setImproveError("Kunne ikke koble til serveren. Prøv igjen.");
+    } finally {
+      setIsImprovingBackground(false);
+    }
+  }
 
   async function handleFetchFromUrl(url: string) {
     setUrlError("");
@@ -133,6 +164,9 @@ export default function GeneratorPage() {
               onFetchFromUrl={handleFetchFromUrl}
               isFetchingUrl={isFetchingUrl}
               urlError={urlError}
+              onImproveBackground={handleImproveBackground}
+              isImprovingBackground={isImprovingBackground}
+              improveError={improveError}
             />
 
             <TemplateSelector value={template} onChange={setTemplate} />
