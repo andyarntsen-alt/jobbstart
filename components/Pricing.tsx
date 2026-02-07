@@ -108,7 +108,7 @@ export default function Pricing() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className={`group relative flex flex-col bg-background p-6 md:p-8 transition-all hover:bg-white ${plan.popular ? "z-10 shadow-2xl shadow-black/5" : ""
+              className={`group relative flex flex-col bg-background p-6 md:p-8 transition-all hover:bg-white hover:-translate-y-0.5 ${plan.popular ? "z-10 shadow-2xl shadow-black/5" : ""
                 }`}
             >
               <div className="mb-5 flex items-center justify-between">

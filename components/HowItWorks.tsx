@@ -51,7 +51,7 @@ export default function HowItWorks() {
               className="group relative border border-foreground/5 p-6 md:p-8 lg:p-10 hover:bg-white transition-colors"
             >
               <div className="flex items-start justify-between mb-8">
-                <span className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-foreground/5 group-hover:text-foreground/10 transition-colors">
+                <span className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-foreground/5 group-hover:text-foreground/20 transition-colors">
                   {step.number}
                 </span>
                 <div className="h-12 w-12 flex items-center justify-center border border-foreground/10 group-hover:border-foreground transition-colors">
