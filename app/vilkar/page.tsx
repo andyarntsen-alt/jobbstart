@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Vilkår for bruk",
   description:
     "Les vilkårene for bruk av CVpilot sine tjenester, inkludert søknadsgenerator og CV-bygger.",
+  alternates: {
+    canonical: "/vilkar",
+  },
 };
 
 const sections = [

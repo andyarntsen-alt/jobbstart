@@ -42,6 +42,9 @@ export async function generateMetadata({
       modifiedTime: post.updatedAt || post.publishedAt,
       locale: "nb_NO",
       url: `${siteConfig.url}/blogg/${post.slug}`,
+      siteName: siteConfig.name,
+      authors: [siteConfig.name],
+      section: post.category === "cv" ? "CV" : post.category === "jobbsoknad" ? "Jobbsøknad" : post.category === "intervju" ? "Intervju" : "Karriere",
     },
   };
 }
@@ -166,12 +169,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         <div className="mt-16 border-t border-border pt-8">
           <p className="text-sm font-bold mb-2">
-            Klar til å lage din søknad?
+            Klar til å komme i gang?
           </p>
           <p className="text-sm text-muted-foreground mb-4">
-            Bruk KI til å generere en profesjonell jobbsøknad på under 2 minutter.
+            Bruk KI til å generere en profesjonell jobbsøknad eller bygge en CV på under 2 minutter.
           </p>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             <Link
               href="/generator"
               className="inline-flex items-center justify-center h-9 px-4 text-sm font-medium bg-foreground text-background hover:bg-foreground/90 transition-colors"
@@ -183,6 +186,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               className="inline-flex items-center justify-center h-9 px-4 text-sm font-medium border border-border hover:bg-white transition-colors"
             >
               Bygg CV
+            </Link>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
+            <Link href="/cv-mal" className="text-xs text-muted-foreground hover:text-foreground transition-colors underline decoration-border hover:decoration-foreground">
+              CV-maler
+            </Link>
+            <Link href="/jobbsoknad-mal" className="text-xs text-muted-foreground hover:text-foreground transition-colors underline decoration-border hover:decoration-foreground">
+              Søknadsmaler
+            </Link>
+            <Link href="/soknadsbrev" className="text-xs text-muted-foreground hover:text-foreground transition-colors underline decoration-border hover:decoration-foreground">
+              Søknadsbrev-guide
             </Link>
           </div>
         </div>

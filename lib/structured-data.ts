@@ -1,4 +1,41 @@
 import { siteConfig } from "@/lib/seo";
+import type { BlogPost } from "@/lib/blog";
+
+export function getWebSiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: siteConfig.name,
+    url: siteConfig.url,
+    inLanguage: "nb",
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+  };
+}
+
+export function getBlogItemListSchema(posts: BlogPost[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "CVpilot Blogg",
+    description:
+      "Tips og guider om jobbsøknader, CV-skriving og karriere i Norge.",
+    url: `${siteConfig.url}/blogg`,
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: posts.length,
+      itemListElement: posts.map((post, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `${siteConfig.url}/blogg/${post.slug}`,
+        name: post.title,
+      })),
+    },
+  };
+}
 
 export function getOrganizationSchema() {
   return {

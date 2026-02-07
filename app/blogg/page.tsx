@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { blogPosts } from "@/lib/blog";
 import { siteConfig } from "@/lib/seo";
-import { getBreadcrumbSchema } from "@/lib/structured-data";
+import { getBreadcrumbSchema, getBlogItemListSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "Blogg — Tips for jobbsøkere i Norge",
@@ -27,11 +27,13 @@ export default function BlogPage() {
     { name: "Blogg", url: "/blogg" },
   ]);
 
+  const itemList = getBlogItemListSchema(blogPosts);
+
   return (
     <div className="min-h-screen bg-background">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumb, itemList]) }}
       />
 
       <header className="border-b border-black/5 bg-background">

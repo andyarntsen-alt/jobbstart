@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Personvernerklæring",
   description:
     "Les om hvordan CVpilot behandler dine personopplysninger, bruk av KI, og dine rettigheter under GDPR.",
+  alternates: {
+    canonical: "/personvern",
+  },
 };
 
 const sections = [

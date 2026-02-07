@@ -11,6 +11,7 @@ import JsonLd from "@/components/JsonLd";
 import {
   getOrganizationSchema,
   getWebApplicationSchema,
+  getWebSiteSchema,
   getFAQSchema,
   getHowToWriteApplicationSchema,
   getHowToBuildCVSchema,
@@ -19,6 +20,7 @@ import {
 export default function Home() {
   return (
     <>
+      <JsonLd data={getWebSiteSchema()} />
       <JsonLd data={getOrganizationSchema()} />
       <JsonLd data={getWebApplicationSchema()} />
       <JsonLd data={getFAQSchema()} />
