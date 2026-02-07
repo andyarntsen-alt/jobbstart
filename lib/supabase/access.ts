@@ -1,13 +1,6 @@
 import { getSupabaseClient } from "./client";
 import type { Profile } from "@/types/supabase";
-import type { UserAccess, PlanId } from "@/lib/plans";
-
-const PLAN_RANK: Record<PlanId, number> = {
-  free: 0,
-  enkel: 1,
-  standard: 2,
-  max: 3,
-};
+import type { UserAccess } from "@/lib/plans";
 
 export function profileToAccess(profile: Profile): UserAccess {
   // Admins get max plan with unlimited credits
@@ -44,17 +37,10 @@ function accessToProfileUpdate(access: UserAccess) {
   };
 }
 
-export function mergeAccess(local: UserAccess, remote: UserAccess): UserAccess {
-  const localRank = PLAN_RANK[local.plan];
-  const remoteRank = PLAN_RANK[remote.plan];
-
-  if (localRank > remoteRank) return local;
-  if (remoteRank > localRank) return remote;
-
-  // Same plan: take the one with more remaining credits
-  if (local.applicationsRemaining >= remote.applicationsRemaining) {
-    return local;
-  }
+export function mergeAccess(_local: UserAccess, remote: UserAccess): UserAccess {
+  // Always trust server values to prevent localStorage manipulation.
+  // Server-side credit enforcement ensures credits are accurate in Supabase.
+  // Local-only upgrades (before webhook fires) are handled by verify-session.
   return remote;
 }
 

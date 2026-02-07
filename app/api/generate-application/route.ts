@@ -4,6 +4,7 @@ import { buildSystemPrompt, buildUserPrompt } from "@/lib/prompts";
 import { rateLimit, getIp } from "@/lib/rate-limit";
 import { checkFreeTrialApplication, consumeFreeTrialApplication } from "@/lib/free-trial";
 import { verifyPlan } from "@/lib/supabase/verify-plan";
+import { consumeApplicationCreditServer } from "@/lib/supabase/consume-credit";
 import type { TemplateStyle } from "@/types/application";
 
 export async function POST(req: NextRequest) {
@@ -17,7 +18,10 @@ export async function POST(req: NextRequest) {
     }
 
     // Server-side plan verification (no longer trusts client header)
-    const { planId } = await verifyPlan(req.headers.get("authorization"));
+    const { planId, userId } = await verifyPlan(req.headers.get("authorization"));
+
+    let creditRemaining: number | undefined;
+
     if (planId === "free") {
       const ip = getIp(req);
       const trial = await checkFreeTrialApplication(ip);
@@ -27,6 +31,16 @@ export async function POST(req: NextRequest) {
           { status: 403 }
         );
       }
+    } else if (userId) {
+      // Paid user: check and consume credit server-side before AI call
+      const credit = await consumeApplicationCreditServer(userId);
+      if (!credit.success) {
+        return NextResponse.json(
+          { error: "Du har brukt opp dine søknadskreditter. Kjøp påfyll eller oppgrader planen." },
+          { status: 403 }
+        );
+      }
+      creditRemaining = credit.remaining;
     }
 
     const body = await req.json();
@@ -88,7 +102,11 @@ export async function POST(req: NextRequest) {
       await consumeFreeTrialApplication(ip);
     }
 
-    return NextResponse.json({ text, wordCount });
+    return NextResponse.json({
+      text,
+      wordCount,
+      ...(creditRemaining !== undefined && { remaining: creditRemaining }),
+    });
   } catch (error: unknown) {
     console.error("Generate application error:", error);
 

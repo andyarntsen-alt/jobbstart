@@ -6,6 +6,7 @@ import {
 } from "@/lib/cv-prompts";
 import { rateLimit } from "@/lib/rate-limit";
 import { verifyPlan } from "@/lib/supabase/verify-plan";
+import { consumeImproveCreditServer } from "@/lib/supabase/consume-credit";
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,12 +19,25 @@ export async function POST(req: NextRequest) {
     }
 
     // Server-side plan verification
-    const { planId } = await verifyPlan(req.headers.get("authorization"));
+    const { planId, userId } = await verifyPlan(req.headers.get("authorization"));
     if (planId === "free" || planId === "enkel") {
       return NextResponse.json(
         { error: "Denne funksjonen krever STANDARD- eller MAX-planen." },
         { status: 403 }
       );
+    }
+
+    // Server-side improve credit check (standard: limited, max: unlimited)
+    let improveRemaining: number | undefined;
+    if (userId) {
+      const credit = await consumeImproveCreditServer(userId, planId);
+      if (!credit.success) {
+        return NextResponse.json(
+          { error: "Du har brukt opp dine KI-forbedringer. Oppgrader til MAX for ubegrenset." },
+          { status: 403 }
+        );
+      }
+      improveRemaining = credit.remaining;
     }
 
     const body = await req.json();
@@ -73,7 +87,10 @@ export async function POST(req: NextRequest) {
         .filter(Boolean);
     }
 
-    return NextResponse.json({ bullets });
+    return NextResponse.json({
+      bullets,
+      ...(improveRemaining !== undefined && { remaining: improveRemaining }),
+    });
   } catch (error: unknown) {
     console.error("CV improve error:", error);
 
