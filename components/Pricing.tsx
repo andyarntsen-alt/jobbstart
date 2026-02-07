@@ -6,6 +6,7 @@ import { Check, ChevronRight, Zap, Activity, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { useAuth } from "@/components/AuthProvider";
 
 const plans = [
   {
@@ -60,6 +61,7 @@ const plans = [
 
 export default function Pricing() {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const { user } = useAuth();
 
   async function handleCheckout(planId: string) {
     setLoadingPlan(planId);
@@ -67,7 +69,7 @@ export default function Pricing() {
       const res = await fetch("/api/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: planId, returnUrl: "/generator" }),
+        body: JSON.stringify({ plan: planId, returnUrl: "/generator", userId: user?.id }),
       });
       const data = await res.json();
       if (data.url) {

@@ -3,6 +3,7 @@ import { JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import CookieConsent from "@/components/CookieConsent";
 import DevAccessPanelLoader from "@/components/DevAccessPanelLoader";
+import AuthProvider from "@/components/AuthProvider";
 import { siteConfig } from "@/lib/seo";
 import "./globals.css";
 
@@ -89,9 +90,11 @@ export default function RootLayout({
   return (
     <html lang="no" className={jetbrainsMono.variable}>
       <body className="font-[family-name:var(--font-mono)] antialiased">
-        {children}
-        <CookieConsent />
-        <DevAccessPanelLoader />
+        <AuthProvider>
+          {children}
+          <CookieConsent />
+          <DevAccessPanelLoader />
+        </AuthProvider>
         <Analytics />
       </body>
     </html>

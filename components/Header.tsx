@@ -4,7 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, Menu, X } from "lucide-react";
+import { ChevronRight, Menu, X, LogIn, LogOut } from "lucide-react";
+import { useAuth } from "@/components/AuthProvider";
+import LoginDialog from "@/components/LoginDialog";
 
 const menuItems = [
   { label: "Lag søknad", href: "/generator" },
@@ -14,8 +16,11 @@ const menuItems = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const { user, loading, signOut } = useAuth();
 
   return (
+    <>
     <header className="sticky top-0 z-[1000] w-full border-b border-black/5 bg-background/80 backdrop-blur-md h-16 flex items-center">
       <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between px-5 md:px-8 lg:px-10">
         <motion.div
@@ -23,7 +28,7 @@ export default function Header() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Link href="/" className="group flex items-center gap-2">
+          <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="group flex items-center gap-2">
             <span className="text-lg font-black uppercase tracking-[-0.05em] text-foreground">
               Jobb<span className="opacity-40">Start</span>
             </span>
@@ -59,6 +64,33 @@ export default function Header() {
                 </span>
               </Link>
             </Button>
+            {!loading && user && (
+              <Link
+                href="/dashboard"
+                className="text-[13px] font-medium text-foreground/60 hover:text-foreground transition-colors"
+              >
+                Mine dokumenter
+              </Link>
+            )}
+            {!loading && (
+              user ? (
+                <button
+                  onClick={() => signOut()}
+                  className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-foreground/50 hover:text-foreground transition-colors"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                  Logg ut
+                </button>
+              ) : (
+                <button
+                  onClick={() => setLoginOpen(true)}
+                  className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-foreground/50 hover:text-foreground transition-colors"
+                >
+                  <LogIn className="h-3.5 w-3.5" />
+                  Logg inn
+                </button>
+              )
+            )}
           </motion.div>
 
           {/* Mobil: meny-knapp */}
@@ -86,11 +118,37 @@ export default function Header() {
                       key={item.label}
                       href={item.href}
                       onClick={() => setMenuOpen(false)}
-                      className="block px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-foreground/70 hover:bg-foreground hover:text-background transition-all border-b border-foreground/5 last:border-b-0"
+                      className="block px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-foreground/70 hover:bg-foreground hover:text-background transition-all border-b border-foreground/5"
                     >
                       {item.label}
                     </Link>
                   ))}
+                  {!loading && user && (
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setMenuOpen(false)}
+                      className="block px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-foreground/70 hover:bg-foreground hover:text-background transition-all border-b border-foreground/5"
+                    >
+                      Mine dokumenter
+                    </Link>
+                  )}
+                  {!loading && (
+                    user ? (
+                      <button
+                        onClick={() => { signOut(); setMenuOpen(false); }}
+                        className="block w-full text-left px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-foreground/70 hover:bg-foreground hover:text-background transition-all"
+                      >
+                        Logg ut
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => { setLoginOpen(true); setMenuOpen(false); }}
+                        className="block w-full text-left px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-foreground/70 hover:bg-foreground hover:text-background transition-all"
+                      >
+                        Logg inn
+                      </button>
+                    )
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -98,5 +156,8 @@ export default function Header() {
         </nav>
       </div>
     </header>
+
+    <LoginDialog open={loginOpen} onOpenChange={setLoginOpen} />
+    </>
   );
 }

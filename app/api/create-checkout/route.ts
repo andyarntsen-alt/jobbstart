@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { plan, returnUrl } = await req.json();
+    const { plan, returnUrl, userId } = await req.json();
     const origin = req.headers.get("origin") || "http://localhost:3000";
 
     if (!plan || !isValidPlan(plan)) {
@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
           quantity: 1,
         },
       ],
-      metadata: { plan },
+      metadata: { plan, ...(userId ? { userId } : {}) },
       success_url: `${origin}/${successPath}?paid=${plan}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/${cancelPath}`,
     });

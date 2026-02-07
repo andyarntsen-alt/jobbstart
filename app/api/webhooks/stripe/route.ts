@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import getStripe from "@/lib/stripe";
+import { getSupabaseServer } from "@/lib/supabase/server";
+import { PLANS } from "@/lib/plans";
+import type { PlanId } from "@/lib/plans";
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -20,10 +23,42 @@ export async function POST(req: NextRequest) {
       case "checkout.session.completed": {
         const session = event.data.object;
         const plan = session.metadata?.plan;
+        const userId = session.metadata?.userId;
         const email = session.customer_details?.email;
-        // TODO: Save payment to Supabase when database is set up
-        // For now, log for monitoring
-        console.error(`[PAYMENT] plan=${plan} email=${email} session=${session.id}`);
+        const amount = session.amount_total ?? 0;
+
+        console.error(`[PAYMENT] plan=${plan} email=${email} userId=${userId} session=${session.id}`);
+
+        const supabase = getSupabaseServer();
+        if (supabase && plan) {
+          // Insert purchase record
+          await supabase.from("purchases").insert({
+            user_id: userId || null,
+            plan,
+            amount,
+            currency: "nok",
+            stripe_session_id: session.id,
+            stripe_email: email || null,
+          });
+
+          // Update user profile if userId is present
+          if (userId && plan !== "pafyll") {
+            const planDef = PLANS[plan as PlanId];
+            if (planDef) {
+              await supabase
+                .from("profiles")
+                .update({
+                  plan,
+                  applications_remaining: planDef.applicationCredits,
+                  applications_used: 0,
+                  improve_experience_used: 0,
+                  purchased_at: new Date().toISOString(),
+                  stripe_session_id: session.id,
+                })
+                .eq("id", userId);
+            }
+          }
+        }
         break;
       }
     }

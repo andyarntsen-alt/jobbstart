@@ -25,6 +25,8 @@ import CrossSellBanner from "@/components/CrossSellBanner";
 import PaywallPopup from "@/components/PaywallPopup";
 import { generateCVPdf } from "@/lib/cv-pdf-generator";
 import { useAccess } from "@/lib/hooks/useAccess";
+import { useAuth } from "@/components/AuthProvider";
+import { saveCV, fetchCV } from "@/lib/supabase/storage";
 import type { PlanId } from "@/lib/plans";
 import type {
   CVData,
@@ -127,6 +129,9 @@ export default function CVForm() {
     hasFullPreview,
   } = useAccess();
 
+  const { user } = useAuth();
+  const debounceRef = useRef<NodeJS.Timeout>(null);
+
   function showPaywall(
     feature: string,
     key: "pdfWord" | "backgroundImprove" | "cvSummary" | "cvImprove" | "cvPdf" | "cvTemplates"
@@ -160,19 +165,46 @@ export default function CVForm() {
     }
   }, []);
 
+  // Load from Supabase when logged in (overrides localStorage)
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const remote = await fetchCV(user.id);
+      if (remote) {
+        setData(remote.data);
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(remote.data)); } catch {}
+      } else {
+        // First login: push local CV to Supabase
+        try {
+          const local = localStorage.getItem(STORAGE_KEY);
+          if (local) {
+            const parsed = JSON.parse(local) as CVData;
+            if (parsed.personal?.name) saveCV(user.id, parsed);
+          }
+        } catch {}
+      }
+    })();
+  }, [user]);
+
   // Focus step content on navigation
   useEffect(() => {
     stepRef.current?.focus();
   }, [step]);
 
-  // Save to localStorage on data change
+  // Save to localStorage + debounced Supabase
   const saveToStorage = useCallback((d: CVData) => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
     } catch {
       // Ignore quota errors
     }
-  }, []);
+    if (user) {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => {
+        saveCV(user.id, d);
+      }, 2000);
+    }
+  }, [user]);
 
   function updateData(partial: Partial<CVData>) {
     setData((prev) => {

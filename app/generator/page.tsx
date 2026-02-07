@@ -15,6 +15,8 @@ import UpgradeDialog from "@/components/generator/UpgradeDialog";
 import CrossSellBanner from "@/components/CrossSellBanner";
 import PaywallPopup from "@/components/PaywallPopup";
 import { useAccess } from "@/lib/hooks/useAccess";
+import { useAuth } from "@/components/AuthProvider";
+import { saveApplication } from "@/lib/supabase/storage";
 import type { TemplateStyle, ContactInfo, ExportLayout } from "@/types/application";
 import type { PlanId } from "@/lib/plans";
 
@@ -57,6 +59,7 @@ export default function GeneratorPage() {
     addCredits,
   } = useAccess();
 
+  const { user } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -96,7 +99,7 @@ export default function GeneratorPage() {
       const res = await fetch("/api/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan, returnUrl: "/generator" }),
+        body: JSON.stringify({ plan, returnUrl: "/generator", userId: user?.id }),
       });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
@@ -204,6 +207,19 @@ export default function GeneratorPage() {
       setGeneratedText(data.text);
       setWordCount(data.wordCount);
       consumeCredit();
+
+      if (user) {
+        saveApplication(user.id, {
+          generatedText: data.text,
+          jobDescription,
+          userBackground,
+          jobTitle: jobTitle || undefined,
+          template,
+          layout,
+          contactInfo,
+          wordCount: data.wordCount,
+        });
+      }
     } catch {
       setError("Kunne ikke koble til serveren. Sjekk internettforbindelsen.");
     } finally {
