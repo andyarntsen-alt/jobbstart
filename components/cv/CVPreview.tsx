@@ -1,12 +1,15 @@
 "use client";
 
 import type { CVData } from "@/types/cv";
+import PaywallOverlay from "@/components/PaywallOverlay";
 
 interface CVPreviewProps {
   data: CVData;
+  hasFullPreview: boolean;
+  onUpgrade: () => void;
 }
 
-export default function CVPreview({ data }: CVPreviewProps) {
+export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreviewProps) {
   const { personal, summary, experience, education, skills, template } = data;
 
   const contactStr = [personal.email, personal.phone, personal.address, personal.linkedin]
@@ -169,9 +172,23 @@ export default function CVPreview({ data }: CVPreviewProps) {
       </>
     );
 
+  function wrapWithPaywall(content: React.ReactNode) {
+    if (hasFullPreview) return content;
+    return (
+      <PaywallOverlay
+        visiblePercent={0.3}
+        ctaText="Lås opp full CV-forhåndsvisning og PDF-nedlasting"
+        onUpgrade={onUpgrade}
+        watermarkText="JOBBSTART.NO"
+      >
+        {content}
+      </PaywallOverlay>
+    );
+  }
+
   // ── Oslo: Two-column with navy sidebar ──
   if (isOslo) {
-    return (
+    return wrapWithPaywall(
       <div className="rounded-lg border border-border bg-white text-[13px] leading-relaxed text-black shadow-sm flex overflow-hidden p-0">
         {/* Navy sidebar */}
         <div className="w-[35%] bg-[#1A1F36] p-5 text-white shrink-0">
@@ -228,7 +245,7 @@ export default function CVPreview({ data }: CVPreviewProps) {
 
   // ── Fjord: Right sidebar with warm terracotta ──
   if (template === "fjord") {
-    return (
+    return wrapWithPaywall(
       <div className="rounded-lg border border-border bg-white text-[13px] leading-relaxed text-black shadow-sm flex overflow-hidden p-0">
         {/* Main content left */}
         <div className="flex-1 p-5">
@@ -316,7 +333,7 @@ export default function CVPreview({ data }: CVPreviewProps) {
 
   // ── Stavanger: Dark banner header with coral accent ──
   if (template === "stavanger") {
-    return (
+    return wrapWithPaywall(
       <div className="rounded-lg border border-border bg-white text-[13px] leading-relaxed text-black shadow-sm overflow-hidden p-0">
         {/* Dark banner */}
         <div className="bg-[#2A363B] p-5 pb-0">
@@ -395,7 +412,7 @@ export default function CVPreview({ data }: CVPreviewProps) {
 
   // ── Tidslinje: Timeline with circle nodes ──
   if (template === "tidslinje") {
-    return (
+    return wrapWithPaywall(
       <div className="rounded-lg border border-border bg-white text-[13px] leading-relaxed text-black shadow-sm p-6">
         <div className="flex items-start justify-between">
           <div>
@@ -470,7 +487,7 @@ export default function CVPreview({ data }: CVPreviewProps) {
 
   // ── Diplomatisk: Formal double border, courier ──
   if (template === "diplomatisk") {
-    return (
+    return wrapWithPaywall(
       <div className="rounded-lg border-2 border-gray-700 bg-white text-[13px] leading-relaxed text-black shadow-sm p-1">
         <div className="border border-gray-500 p-6">
           <div className="text-center">
@@ -549,7 +566,7 @@ export default function CVPreview({ data }: CVPreviewProps) {
 
   // ── Bergen: Three-tier header + table layout ──
   if (template === "bergen") {
-    return (
+    return wrapWithPaywall(
       <div className="rounded-lg border border-border bg-white text-[13px] leading-relaxed text-black shadow-sm overflow-hidden p-0">
         {/* Header block 1 — dark plum */}
         <div className="bg-[#48283E] p-5 flex items-start justify-between">
@@ -621,7 +638,7 @@ export default function CVPreview({ data }: CVPreviewProps) {
   }
 
   // ── All other templates (Nordisk, Eksekutiv, Kreativ, Kompakt) ──
-  return (
+  return wrapWithPaywall(
     <div className={`rounded-lg border border-border bg-white text-[13px] leading-relaxed text-black shadow-sm ${
       isKreativ ? "border-l-[3px] border-l-[#2B5F8A] p-6" : "p-6"
     }`}>

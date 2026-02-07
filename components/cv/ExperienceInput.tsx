@@ -5,19 +5,29 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Loader2, Sparkles, Trash2, Check } from "lucide-react";
+import { Loader2, Sparkles, Trash2, Check, Lock } from "lucide-react";
 import type { CVExperience } from "@/types/cv";
 
 interface ExperienceInputProps {
   experience: CVExperience;
   onChange: (updated: CVExperience) => void;
   onRemove: () => void;
+  canImprove: boolean;
+  onPaywall: () => void;
+  onImproveUsed: () => void;
+  improveRemaining: number; // -1 = unlimited, 0+ = count
+  planId: string;
 }
 
 export default function ExperienceInput({
   experience,
   onChange,
   onRemove,
+  canImprove,
+  onPaywall,
+  onImproveUsed,
+  improveRemaining,
+  planId,
 }: ExperienceInputProps) {
   const [isImproving, setIsImproving] = useState(false);
   const [improveError, setImproveError] = useState("");
@@ -27,6 +37,10 @@ export default function ExperienceInput({
   }
 
   async function handleImprove() {
+    if (!canImprove) {
+      onPaywall();
+      return;
+    }
     if (!experience.description.trim()) return;
     setIsImproving(true);
     setImproveError("");
@@ -34,7 +48,7 @@ export default function ExperienceInput({
     try {
       const res = await fetch("/api/cv/improve", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-plan-id": planId },
         body: JSON.stringify({
           text: experience.description,
           title: experience.title,
@@ -45,6 +59,7 @@ export default function ExperienceInput({
       const data = await res.json();
       if (res.ok && data.bullets) {
         onChange({ ...experience, bullets: data.bullets });
+        onImproveUsed();
       } else {
         setImproveError(data.error || "Kunne ikke forbedre teksten. Prøv igjen.");
       }
@@ -128,10 +143,15 @@ export default function ExperienceInput({
       >
         {isImproving ? (
           <Loader2 className="h-3.5 w-3.5 animate-spin" />
+        ) : !canImprove ? (
+          <Lock className="h-3.5 w-3.5" />
         ) : (
           <Sparkles className="h-3.5 w-3.5" />
         )}
         Forbedre med KI
+        {canImprove && improveRemaining >= 0 && (
+          <span className="text-muted-foreground">({improveRemaining} igjen)</span>
+        )}
       </Button>
 
       {improveError && (

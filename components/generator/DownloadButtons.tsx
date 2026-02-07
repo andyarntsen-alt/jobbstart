@@ -7,6 +7,7 @@ import type { ExportLayout } from "@/types/application";
 
 interface DownloadButtonsProps {
   text: string;
+  canExport: boolean;
   isPaid: boolean;
   contactInfo: { name: string; phone: string; email: string };
   layout: ExportLayout;
@@ -16,6 +17,7 @@ interface DownloadButtonsProps {
 
 export default function DownloadButtons({
   text,
+  canExport,
   isPaid,
   contactInfo,
   layout,
@@ -25,13 +27,17 @@ export default function DownloadButtons({
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
+    if (!isPaid) {
+      onUpgradeClick();
+      return;
+    }
     await navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
 
   async function handlePDF() {
-    if (!isPaid) {
+    if (!canExport) {
       onUpgradeClick();
       return;
     }
@@ -40,7 +46,7 @@ export default function DownloadButtons({
   }
 
   async function handleWord() {
-    if (!isPaid) {
+    if (!canExport) {
       onUpgradeClick();
       return;
     }
@@ -51,15 +57,19 @@ export default function DownloadButtons({
   return (
     <div className="flex flex-wrap gap-3">
       <Button variant="outline" className="gap-2" onClick={handleCopy}>
-        <Copy className="h-4 w-4" />
+        {!isPaid ? (
+          <Lock className="h-4 w-4" />
+        ) : (
+          <Copy className="h-4 w-4" />
+        )}
         {copied ? "Kopiert!" : "Kopier tekst"}
       </Button>
       <Button
-        variant={isPaid ? "outline" : "secondary"}
+        variant={canExport ? "outline" : "secondary"}
         className="gap-2"
         onClick={handlePDF}
       >
-        {isPaid ? (
+        {canExport ? (
           <FileText className="h-4 w-4" />
         ) : (
           <Lock className="h-4 w-4" />
@@ -67,11 +77,11 @@ export default function DownloadButtons({
         Last ned PDF
       </Button>
       <Button
-        variant={isPaid ? "outline" : "secondary"}
+        variant={canExport ? "outline" : "secondary"}
         className="gap-2"
         onClick={handleWord}
       >
-        {isPaid ? (
+        {canExport ? (
           <FileDown className="h-4 w-4" />
         ) : (
           <Lock className="h-4 w-4" />

@@ -16,6 +16,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Plan check: minimum "standard"
+    const planId = req.headers.get("x-plan-id") || "free";
+    if (planId === "free" || planId === "enkel") {
+      return NextResponse.json(
+        { error: "Denne funksjonen krever STANDARD- eller MAX-planen." },
+        { status: 403 }
+      );
+    }
+
     const body = await req.json();
     const { text, title, company } = body as {
       text: string;

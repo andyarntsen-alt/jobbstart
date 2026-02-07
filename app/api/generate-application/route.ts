@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import getGroqClient from "@/lib/groq";
 import { buildSystemPrompt, buildUserPrompt } from "@/lib/prompts";
-import { rateLimit } from "@/lib/rate-limit";
+import { rateLimit, getIp } from "@/lib/rate-limit";
+import { checkFreeTrialApplication, consumeFreeTrialApplication } from "@/lib/free-trial";
 import type { TemplateStyle } from "@/types/application";
 
 export async function POST(req: NextRequest) {
@@ -12,6 +13,19 @@ export async function POST(req: NextRequest) {
         { error: "For mange forespørsler i dag. Prøv igjen i morgen." },
         { status: 429 }
       );
+    }
+
+    // Free trial check for free users
+    const planId = req.headers.get("x-plan-id") || "free";
+    if (planId === "free") {
+      const ip = getIp(req);
+      const trial = await checkFreeTrialApplication(ip);
+      if (!trial.allowed) {
+        return NextResponse.json(
+          { error: "Du har brukt din gratis prøvegang. Oppgrader for å generere flere søknader." },
+          { status: 403 }
+        );
+      }
     }
 
     const body = await req.json();
@@ -66,6 +80,12 @@ export async function POST(req: NextRequest) {
 
     const text = completion.choices[0]?.message?.content?.trim() ?? "";
     const wordCount = text.split(/\s+/).filter(Boolean).length;
+
+    // Consume free trial for free users
+    if (planId === "free") {
+      const ip = getIp(req);
+      await consumeFreeTrialApplication(ip);
+    }
 
     return NextResponse.json({ text, wordCount });
   } catch (error: unknown) {

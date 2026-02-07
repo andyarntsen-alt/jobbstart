@@ -1,13 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Check, ChevronRight, Zap, Activity } from "lucide-react";
+import { Check, ChevronRight, Zap, Activity, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
 const plans = [
   {
+    id: "enkel" as const,
     name: "ENKEL",
     price: "49",
     description: "For den raske jobbsøkeren som trenger én god søknad.",
@@ -19,8 +21,10 @@ const plans = [
     ],
     popular: false,
     icon: Activity,
+    checkout: true,
   },
   {
+    id: "standard" as const,
     name: "STANDARD",
     price: "149",
     description: "Søknad + CV i én pakke. Alt du trenger for en effektiv jobbsøk.",
@@ -28,31 +32,54 @@ const plans = [
       "5 søknader",
       "CV-bygger inkludert",
       "KI-generert CV-sammendrag",
+      "KI-forbedring av erfaring (10×)",
+      "FINN.no auto-import",
       "Alle brevmaler + 10 CV-maler",
-      "Ferdig på under 2 min",
-      "Prioritert behandling",
     ],
-    popular: true,
+    popular: false,
     icon: Zap,
+    checkout: true,
   },
   {
+    id: "max" as const,
     name: "MAX",
     price: "249",
     description: "Full tilgang til søknad og CV for aktive jobbsøkere.",
     features: [
+      "Alt i STANDARD, pluss:",
       "20 søknader",
-      "CV-bygger med KI-forbedring",
-      "FINN.no auto-import",
-      "Alle maler + prioritert støtte",
-      "KI forbedrer erfaringspunkter",
+      "Ubegrenset KI-forbedring",
+      "Prioritert støtte",
       "Eksklusive brevmaler",
     ],
-    popular: false,
+    popular: true,
     icon: Activity,
+    checkout: true,
   },
 ];
 
 export default function Pricing() {
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
+  async function handleCheckout(planId: string) {
+    setLoadingPlan(planId);
+    try {
+      const res = await fetch("/api/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan: planId, returnUrl: "/generator" }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+        return;
+      }
+    } catch {
+      // Fallback
+    }
+    setLoadingPlan(null);
+  }
+
   return (
     <section id="priser" className="bg-background px-5 md:px-8 lg:px-10 py-16 md:py-20 border-t border-foreground/5 relative">
       <div className="absolute inset-0 bg-grid-white opacity-20 pointer-events-none" />
@@ -90,7 +117,7 @@ export default function Pricing() {
                 </div>
                 {plan.popular && (
                   <Badge className="rounded-none bg-foreground text-background font-black uppercase text-[9px] tracking-widest px-3 py-1">
-                    MEST POPULÆR
+                    ANBEFALT
                   </Badge>
                 )}
               </div>
@@ -117,18 +144,38 @@ export default function Pricing() {
                 ))}
               </div>
 
-              <Button
-                asChild
-                className={`w-full rounded-none h-12 font-black uppercase text-[11px] tracking-[0.2em] transition-all ${plan.popular
-                    ? "bg-foreground text-background hover:bg-foreground/90"
-                    : "bg-white border border-foreground/10 text-foreground hover:bg-foreground hover:text-background"
-                  }`}
-              >
-                <Link href="/generator" className="flex items-center gap-2">
-                  Kom i gang
-                  <ChevronRight className="h-3.5 w-3.5" />
-                </Link>
-              </Button>
+              {plan.checkout ? (
+                <Button
+                  onClick={() => handleCheckout(plan.id)}
+                  disabled={loadingPlan !== null}
+                  className={`w-full rounded-none h-12 font-black uppercase text-[11px] tracking-[0.2em] transition-all ${plan.popular
+                      ? "bg-foreground text-background hover:bg-foreground/90"
+                      : "bg-white border border-foreground/10 text-foreground hover:bg-foreground hover:text-background"
+                    }`}
+                >
+                  {loadingPlan === plan.id ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      Kjøp {plan.name}
+                      <ChevronRight className="h-3.5 w-3.5" />
+                    </span>
+                  )}
+                </Button>
+              ) : (
+                <Button
+                  asChild
+                  className={`w-full rounded-none h-12 font-black uppercase text-[11px] tracking-[0.2em] transition-all ${plan.popular
+                      ? "bg-foreground text-background hover:bg-foreground/90"
+                      : "bg-white border border-foreground/10 text-foreground hover:bg-foreground hover:text-background"
+                    }`}
+                >
+                  <Link href="/generator" className="flex items-center gap-2">
+                    Kom i gang
+                    <ChevronRight className="h-3.5 w-3.5" />
+                  </Link>
+                </Button>
+              )}
             </motion.div>
           ))}
         </div>

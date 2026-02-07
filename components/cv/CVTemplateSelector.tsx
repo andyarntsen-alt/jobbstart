@@ -12,7 +12,9 @@ import {
   RectangleHorizontal,
   FileText,
   Rows3,
+  Lock,
 } from "lucide-react";
+import { FREE_CV_TEMPLATES } from "@/lib/plans";
 
 const templates: {
   value: CVTemplate;
@@ -85,40 +87,59 @@ const templates: {
 interface CVTemplateSelectorProps {
   value: CVTemplate;
   onChange: (value: CVTemplate) => void;
+  canUseAll: boolean;
+  onPaywall: () => void;
 }
 
 export default function CVTemplateSelector({
   value,
   onChange,
+  canUseAll,
+  onPaywall,
 }: CVTemplateSelectorProps) {
   return (
     <div>
       <p className="mb-3 text-base font-semibold">Velg CV-mal</p>
       <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
-        {templates.map((t) => (
-          <button
-            key={t.value}
-            type="button"
-            onClick={() => onChange(t.value)}
-            className={`flex flex-col items-center gap-1.5 rounded-lg border-2 p-3 text-center transition-all ${
-              value === t.value
-                ? "border-foreground/30 bg-foreground/5"
-                : "border-border hover:border-foreground/20"
-            }`}
-          >
-            <t.icon
-              className={`h-5 w-5 ${
-                value === t.value
-                  ? "text-foreground/60"
-                  : "text-muted-foreground"
+        {templates.map((t) => {
+          const isFree = (FREE_CV_TEMPLATES as string[]).includes(t.value);
+          const isLocked = !canUseAll && !isFree;
+          return (
+            <button
+              key={t.value}
+              type="button"
+              onClick={() => {
+                if (isLocked) {
+                  onPaywall();
+                  return;
+                }
+                onChange(t.value);
+              }}
+              className={`relative flex flex-col items-center gap-1.5 rounded-lg border-2 p-3 text-center transition-all ${
+                isLocked
+                  ? "border-border opacity-50 cursor-not-allowed"
+                  : value === t.value
+                  ? "border-foreground/30 bg-foreground/5"
+                  : "border-border hover:border-foreground/20"
               }`}
-            />
-            <span className="text-sm font-medium">{t.label}</span>
-            <span className="text-[11px] text-muted-foreground">
-              {t.description}
-            </span>
-          </button>
-        ))}
+            >
+              {isLocked && (
+                <Lock className="absolute top-2 right-2 h-3 w-3 text-muted-foreground" />
+              )}
+              <t.icon
+                className={`h-5 w-5 ${
+                  value === t.value
+                    ? "text-foreground/60"
+                    : "text-muted-foreground"
+                }`}
+              />
+              <span className="text-sm font-medium">{t.label}</span>
+              <span className="text-[11px] text-muted-foreground">
+                {t.description}
+              </span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

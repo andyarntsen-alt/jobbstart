@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Loader2, ArrowLeft } from "lucide-react";
@@ -12,7 +13,10 @@ import LayoutSelector from "@/components/generator/LayoutSelector";
 import GeneratorSeoContent from "@/components/generator/GeneratorSeoContent";
 import UpgradeDialog from "@/components/generator/UpgradeDialog";
 import CrossSellBanner from "@/components/CrossSellBanner";
+import PaywallPopup from "@/components/PaywallPopup";
+import { useAccess } from "@/lib/hooks/useAccess";
 import type { TemplateStyle, ContactInfo, ExportLayout } from "@/types/application";
+import type { PlanId } from "@/lib/plans";
 
 export default function GeneratorPage() {
   const [jobDescription, setJobDescription] = useState("");
@@ -27,7 +31,6 @@ export default function GeneratorPage() {
   const [wordCount, setWordCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isPaid] = useState(true); // TODO: Set back to false when Stripe is connected
   const [isFetchingUrl, setIsFetchingUrl] = useState(false);
   const [urlError, setUrlError] = useState("");
   const [layout, setLayout] = useState<ExportLayout>("profesjonell");
@@ -36,14 +39,87 @@ export default function GeneratorPage() {
   const [improveError, setImproveError] = useState("");
   const [upgradeOpen, setUpgradeOpen] = useState(false);
 
+  // Paywall popup state
+  const [paywallOpen, setPaywallOpen] = useState(false);
+  const [paywallFeature, setPaywallFeature] = useState("");
+  const [paywallFeatureKey, setPaywallFeatureKey] = useState<
+    "pdfWord" | "backgroundImprove" | "cvSummary" | "cvImprove" | "cvPdf" | "cvTemplates"
+  >("backgroundImprove");
+
+  const {
+    access,
+    isPaid,
+    canGenerate,
+    canExportPdf,
+    canImproveBackground,
+    consumeCredit,
+    upgradePlan,
+    addCredits,
+  } = useAccess();
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  // Handle Stripe redirect
+  useEffect(() => {
+    const paid = searchParams.get("paid");
+    const sessionId = searchParams.get("session_id");
+    if (!paid || !sessionId) return;
+
+    async function verifyPayment() {
+      try {
+        const res = await fetch("/api/verify-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId }),
+        });
+        const data = await res.json();
+        if (data.valid) {
+          if (paid === "pafyll") {
+            addCredits();
+          } else {
+            upgradePlan(data.plan as PlanId, sessionId!);
+          }
+        }
+      } catch {
+        // Ignore verification errors
+      }
+      // Clean URL
+      router.replace("/generator", { scroll: false });
+    }
+
+    verifyPayment();
+  }, [searchParams, router, upgradePlan, addCredits]);
+
+  async function handleCheckout(plan: PlanId | "pafyll") {
+    try {
+      const res = await fetch("/api/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan, returnUrl: "/generator" }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch {
+      window.location.href = "/#priser";
+    }
+  }
+
   async function handleImproveBackground() {
+    if (!canImproveBackground) {
+      setPaywallFeature("Forbedre bakgrunn med KI");
+      setPaywallFeatureKey("backgroundImprove");
+      setPaywallOpen(true);
+      return;
+    }
+
     setImproveError("");
     setIsImprovingBackground(true);
 
     try {
       const res = await fetch("/api/improve-background", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-plan-id": access.plan },
         body: JSON.stringify({
           text: userBackground,
           jobDescription: jobDescription || undefined,
@@ -98,13 +174,18 @@ export default function GeneratorPage() {
       return;
     }
 
+    if (!canGenerate) {
+      setUpgradeOpen(true);
+      return;
+    }
+
     setError("");
     setIsLoading(true);
 
     try {
       const res = await fetch("/api/generate-application", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-plan-id": access.plan },
         body: JSON.stringify({
           jobDescription,
           userBackground,
@@ -122,6 +203,7 @@ export default function GeneratorPage() {
 
       setGeneratedText(data.text);
       setWordCount(data.wordCount);
+      consumeCredit();
     } catch {
       setError("Kunne ikke koble til serveren. Sjekk internettforbindelsen.");
     } finally {
@@ -170,6 +252,7 @@ export default function GeneratorPage() {
               onImproveBackground={handleImproveBackground}
               isImprovingBackground={isImprovingBackground}
               improveError={improveError}
+              canImproveBackground={canImproveBackground}
             />
 
             <TemplateSelector value={template} onChange={setTemplate} />
@@ -189,6 +272,8 @@ export default function GeneratorPage() {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Genererer søknad...
                 </>
+              ) : !canGenerate ? (
+                `Generer søknad (${access.applicationsRemaining} igjen)`
               ) : (
                 "Generer søknad"
               )}
@@ -203,10 +288,12 @@ export default function GeneratorPage() {
                   onChange={setGeneratedText}
                   wordCount={wordCount}
                   isPaid={isPaid}
+                  onUpgrade={() => setUpgradeOpen(true)}
                 />
                 <LayoutSelector value={layout} onChange={setLayout} />
                 <DownloadButtons
                   text={generatedText}
+                  canExport={canExportPdf}
                   isPaid={isPaid}
                   contactInfo={contactInfo}
                   layout={layout}
@@ -238,7 +325,21 @@ export default function GeneratorPage() {
       </main>
 
       <GeneratorSeoContent />
-      <UpgradeDialog open={upgradeOpen} onOpenChange={setUpgradeOpen} />
+
+      <UpgradeDialog
+        open={upgradeOpen}
+        onOpenChange={setUpgradeOpen}
+        access={access}
+        onCheckout={handleCheckout}
+      />
+
+      <PaywallPopup
+        open={paywallOpen}
+        onOpenChange={setPaywallOpen}
+        feature={paywallFeature}
+        featureKey={paywallFeatureKey}
+        onCheckout={handleCheckout}
+      />
     </div>
   );
 }

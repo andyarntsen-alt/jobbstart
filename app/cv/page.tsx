@@ -1,12 +1,50 @@
 "use client";
 
+import { useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import CVForm from "@/components/cv/CVForm";
 import CVSeoContent from "@/components/cv/CVSeoContent";
+import { useAccess } from "@/lib/hooks/useAccess";
+import type { PlanId } from "@/lib/plans";
 
 export default function CVPage() {
+  const { upgradePlan, addCredits } = useAccess();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  // Handle Stripe redirect
+  useEffect(() => {
+    const paid = searchParams.get("paid");
+    const sessionId = searchParams.get("session_id");
+    if (!paid || !sessionId) return;
+
+    async function verifyPayment() {
+      try {
+        const res = await fetch("/api/verify-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId }),
+        });
+        const data = await res.json();
+        if (data.valid) {
+          if (paid === "pafyll") {
+            addCredits();
+          } else {
+            upgradePlan(data.plan as PlanId, sessionId!);
+          }
+        }
+      } catch {
+        // Ignore verification errors
+      }
+      router.replace("/cv", { scroll: false });
+    }
+
+    verifyPayment();
+  }, [searchParams, router, upgradePlan, addCredits]);
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-black/5 bg-background">

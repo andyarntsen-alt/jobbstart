@@ -1,16 +1,6 @@
 import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
 import { NextRequest } from "next/server";
-
-const hasRedis =
-  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN;
-
-const redis = hasRedis
-  ? new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL!,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-    })
-  : null;
+import { redis } from "@/lib/redis";
 
 // 10 AI requests per 24 hours per IP
 const aiLimiter = redis
@@ -45,7 +35,7 @@ const limiters = {
   checkout: checkoutLimiter,
 };
 
-function getIp(req: NextRequest): string {
+export function getIp(req: NextRequest): string {
   return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
 }
 

@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Loader2, Link as LinkIcon, Sparkles } from "lucide-react";
+import { Loader2, Link as LinkIcon, Sparkles, Lock } from "lucide-react";
 import type { ContactInfo } from "@/types/application";
 import { FINN_URL_PATTERN } from "@/lib/constants";
 
@@ -22,6 +22,7 @@ interface JobInputProps {
   onImproveBackground: () => void;
   isImprovingBackground: boolean;
   improveError: string;
+  canImproveBackground: boolean;
 }
 
 export default function JobInput({
@@ -37,6 +38,7 @@ export default function JobInput({
   onImproveBackground,
   isImprovingBackground,
   improveError,
+  canImproveBackground,
 }: JobInputProps) {
   const [finnUrl, setFinnUrl] = useState("");
   const [contactErrors, setContactErrors] = useState<{
@@ -175,6 +177,11 @@ export default function JobInput({
                 <>
                   <Loader2 className="h-3 w-3 animate-spin" />
                   Forbedrer...
+                </>
+              ) : !canImproveBackground ? (
+                <>
+                  <Lock className="h-3 w-3" />
+                  Forbedre med KI
                 </>
               ) : (
                 <>

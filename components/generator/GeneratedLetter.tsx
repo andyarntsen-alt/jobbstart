@@ -1,24 +1,23 @@
 "use client";
 
 import { Textarea } from "@/components/ui/textarea";
+import PaywallOverlay from "@/components/PaywallOverlay";
 
 interface GeneratedLetterProps {
   text: string;
   onChange: (text: string) => void;
   wordCount: number;
   isPaid: boolean;
+  onUpgrade: () => void;
 }
-
-const WATERMARK = "\n\n---\nGenerert med JobbStart.no – oppgrader for vannmerkefri versjon";
 
 export default function GeneratedLetter({
   text,
   onChange,
   wordCount,
   isPaid,
+  onUpgrade,
 }: GeneratedLetterProps) {
-  const displayText = isPaid ? text : text + WATERMARK;
-
   return (
     <div>
       <div className="mb-3 flex items-center justify-between">
@@ -33,16 +32,24 @@ export default function GeneratedLetter({
           {wordCount} ord
         </span>
       </div>
-      <Textarea
-        value={displayText}
-        onChange={(e) => {
-          const newText = isPaid
-            ? e.target.value
-            : e.target.value.replace(WATERMARK, "");
-          onChange(newText);
-        }}
-        className="min-h-[400px] resize-y font-serif text-[15px] leading-relaxed"
-      />
+      {isPaid ? (
+        <Textarea
+          value={text}
+          onChange={(e) => onChange(e.target.value)}
+          className="min-h-[400px] resize-y font-serif text-[15px] leading-relaxed"
+        />
+      ) : (
+        <PaywallOverlay
+          visiblePercent={0.6}
+          ctaText="Lås opp hele søknaden — fra 49 kr"
+          onUpgrade={onUpgrade}
+          watermarkText="JOBBSTART.NO"
+        >
+          <div className="border border-border p-4 min-h-[400px] font-serif text-[15px] leading-relaxed whitespace-pre-wrap select-none">
+            {text}
+          </div>
+        </PaywallOverlay>
+      )}
     </div>
   );
 }

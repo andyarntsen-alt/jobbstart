@@ -19,12 +19,11 @@ export async function POST(req: NextRequest) {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object;
+        const plan = session.metadata?.plan;
+        const email = session.customer_details?.email;
         // TODO: Save payment to Supabase when database is set up
-        break;
-      }
-      case "customer.subscription.deleted": {
-        const subscription = event.data.object;
-        // TODO: Update user status in Supabase
+        // For now, log for monitoring
+        console.error(`[PAYMENT] plan=${plan} email=${email} session=${session.id}`);
         break;
       }
     }

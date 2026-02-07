@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import getStripe from "@/lib/stripe";
 import { rateLimit } from "@/lib/rate-limit";
+import { PLANS, TOPUP_PRICE } from "@/lib/plans";
+import type { PlanId } from "@/lib/plans";
+
+const VALID_PLANS = ["enkel", "standard", "max", "pafyll"] as const;
+type CheckoutPlan = (typeof VALID_PLANS)[number];
+
+function isValidPlan(plan: string): plan is CheckoutPlan {
+  return VALID_PLANS.includes(plan as CheckoutPlan);
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,60 +21,54 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { plan } = await req.json();
+    const { plan, returnUrl } = await req.json();
     const origin = req.headers.get("origin") || "http://localhost:3000";
 
-    if (plan === "enkel") {
-      const session = await getStripe().checkout.sessions.create({
-        mode: "payment",
-        line_items: [
-          {
-            price_data: {
-              currency: "nok",
-              product_data: {
-                name: "JobbStart – Enkel",
-                description: "1 profesjonell søknad med PDF + Word nedlasting",
-              },
-              unit_amount: 4900, // 49 NOK in øre
-            },
-            quantity: 1,
-          },
-        ],
-        success_url: `${origin}/generator?paid=enkel&session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${origin}/generator`,
-      });
-
-      return NextResponse.json({ url: session.url });
+    if (!plan || !isValidPlan(plan)) {
+      return NextResponse.json({ error: "Ugyldig plan" }, { status: 400 });
     }
 
-    if (plan === "pro") {
-      const session = await getStripe().checkout.sessions.create({
-        mode: "subscription",
-        line_items: [
-          {
-            price_data: {
-              currency: "nok",
-              product_data: {
-                name: "JobbStart – Pro",
-                description:
-                  "Ubegrenset søknader, alle maler, PDF + Word nedlasting",
-              },
-              unit_amount: 19900, // 199 NOK in øre
-              recurring: {
-                interval: "month",
-              },
-            },
-            quantity: 1,
-          },
-        ],
-        success_url: `${origin}/generator?paid=pro&session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${origin}/generator`,
-      });
+    const rawPath = returnUrl || "/generator";
+    const cleanPath = rawPath.replace(/^\/+/, "");
+    const cancelPath = cleanPath;
+    const successPath = cleanPath;
 
-      return NextResponse.json({ url: session.url });
+    let productName: string;
+    let productDescription: string;
+    let unitAmount: number;
+
+    if (plan === "pafyll") {
+      productName = "JobbStart – Påfyll";
+      productDescription = "+5 ekstra søknader";
+      unitAmount = TOPUP_PRICE;
+    } else {
+      const planDef = PLANS[plan as PlanId];
+      productName = `JobbStart – ${planDef.name}`;
+      productDescription = planDef.description;
+      unitAmount = planDef.priceInOre;
     }
 
-    return NextResponse.json({ error: "Ugyldig plan" }, { status: 400 });
+    const session = await getStripe().checkout.sessions.create({
+      mode: "payment",
+      line_items: [
+        {
+          price_data: {
+            currency: "nok",
+            product_data: {
+              name: productName,
+              description: productDescription,
+            },
+            unit_amount: unitAmount,
+          },
+          quantity: 1,
+        },
+      ],
+      metadata: { plan },
+      success_url: `${origin}/${successPath}?paid=${plan}&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/${cancelPath}`,
+    });
+
+    return NextResponse.json({ url: session.url });
   } catch (error) {
     console.error("Stripe checkout error:", error);
     return NextResponse.json(

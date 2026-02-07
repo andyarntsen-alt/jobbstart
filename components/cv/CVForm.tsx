@@ -14,6 +14,7 @@ import {
   Download,
   Camera,
   X,
+  Lock,
 } from "lucide-react";
 import ExperienceInput from "./ExperienceInput";
 import EducationInput from "./EducationInput";
@@ -21,7 +22,10 @@ import SkillsInput from "./SkillsInput";
 import CVTemplateSelector from "./CVTemplateSelector";
 import CVPreview from "./CVPreview";
 import CrossSellBanner from "@/components/CrossSellBanner";
+import PaywallPopup from "@/components/PaywallPopup";
 import { generateCVPdf } from "@/lib/cv-pdf-generator";
+import { useAccess } from "@/lib/hooks/useAccess";
+import type { PlanId } from "@/lib/plans";
 import type {
   CVData,
   CVPersonal,
@@ -104,6 +108,47 @@ export default function CVForm() {
   const [summaryError, setSummaryError] = useState("");
   const [photoError, setPhotoError] = useState("");
   const stepRef = useRef<HTMLDivElement>(null);
+
+  // Paywall state
+  const [paywallOpen, setPaywallOpen] = useState(false);
+  const [paywallFeature, setPaywallFeature] = useState("");
+  const [paywallFeatureKey, setPaywallFeatureKey] = useState<
+    "pdfWord" | "backgroundImprove" | "cvSummary" | "cvImprove" | "cvPdf" | "cvTemplates"
+  >("cvSummary");
+
+  const {
+    access,
+    isPaid,
+    canUseCvSummary,
+    canUseCvImprove,
+    improveExperienceRemaining,
+    consumeImproveCredit,
+    canDownloadCv,
+    hasFullPreview,
+  } = useAccess();
+
+  function showPaywall(
+    feature: string,
+    key: "pdfWord" | "backgroundImprove" | "cvSummary" | "cvImprove" | "cvPdf" | "cvTemplates"
+  ) {
+    setPaywallFeature(feature);
+    setPaywallFeatureKey(key);
+    setPaywallOpen(true);
+  }
+
+  async function handleCheckout(plan: PlanId) {
+    try {
+      const res = await fetch("/api/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan, returnUrl: "/cv" }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch {
+      window.location.href = "/#priser";
+    }
+  }
 
   // Load from localStorage
   useEffect(() => {
@@ -188,6 +233,11 @@ export default function CVForm() {
   }
 
   async function handleGenerateSummary() {
+    if (!canUseCvSummary) {
+      showPaywall("KI-generert sammendrag", "cvSummary");
+      return;
+    }
+
     const filledExperiences = data.experience.filter(
       (exp) => exp.title.trim() || exp.description.trim()
     );
@@ -201,7 +251,7 @@ export default function CVForm() {
     try {
       const res = await fetch("/api/cv/generate-summary", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-plan-id": access.plan },
         body: JSON.stringify({ experiences: filledExperiences }),
       });
       const result = await res.json();
@@ -218,6 +268,10 @@ export default function CVForm() {
   }
 
   function handleDownloadPdf() {
+    if (!canDownloadCv) {
+      showPaywall("Last ned CV som PDF", "cvPdf");
+      return;
+    }
     generateCVPdf(data);
   }
 
@@ -370,6 +424,11 @@ export default function CVForm() {
                 experience={exp}
                 onChange={(updated) => updateExperience(i, updated)}
                 onRemove={() => removeExperience(i)}
+                canImprove={canUseCvImprove}
+                onPaywall={() => showPaywall("KI-forbedring av erfaring", "cvImprove")}
+                onImproveUsed={consumeImproveCredit}
+                improveRemaining={improveExperienceRemaining}
+                planId={access.plan}
               />
             ))}
             <Button
@@ -449,6 +508,8 @@ export default function CVForm() {
             >
               {isGeneratingSummary ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
+              ) : !canUseCvSummary ? (
+                <Lock className="h-4 w-4" />
               ) : (
                 <Sparkles className="h-4 w-4" />
               )}
@@ -466,14 +527,24 @@ export default function CVForm() {
             <CVTemplateSelector
               value={data.template}
               onChange={(t: CVTemplate) => updateData({ template: t })}
+              canUseAll={isPaid}
+              onPaywall={() => showPaywall("Alle CV-maler", "cvTemplates")}
             />
-            <CVPreview data={data} />
+            <CVPreview
+              data={data}
+              hasFullPreview={hasFullPreview}
+              onUpgrade={() => showPaywall("Full CV-forhåndsvisning", "cvPdf")}
+            />
             <Button
               size="lg"
               className="w-full gap-2 bg-foreground text-background hover:bg-foreground/80"
               onClick={handleDownloadPdf}
             >
-              <Download className="h-4 w-4" />
+              {canDownloadCv ? (
+                <Download className="h-4 w-4" />
+              ) : (
+                <Lock className="h-4 w-4" />
+              )}
               Last ned PDF
             </Button>
             <CrossSellBanner
@@ -508,6 +579,14 @@ export default function CVForm() {
           </Button>
         )}
       </div>
+
+      <PaywallPopup
+        open={paywallOpen}
+        onOpenChange={setPaywallOpen}
+        feature={paywallFeature}
+        featureKey={paywallFeatureKey}
+        onCheckout={handleCheckout}
+      />
     </div>
   );
 }
