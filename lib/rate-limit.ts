@@ -29,10 +29,20 @@ const checkoutLimiter = redis
     })
   : null;
 
+// 10 verify requests per hour per IP
+const verifyLimiter = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(10, "1 h"),
+      prefix: "rl:verify",
+    })
+  : null;
+
 const limiters = {
   ai: aiLimiter,
   scrape: scrapeLimiter,
   checkout: checkoutLimiter,
+  verify: verifyLimiter,
 };
 
 export function getIp(req: NextRequest): string {
@@ -41,12 +51,15 @@ export function getIp(req: NextRequest): string {
 
 export async function rateLimit(
   req: NextRequest,
-  type: "ai" | "scrape" | "checkout"
+  type: "ai" | "scrape" | "checkout" | "verify"
 ): Promise<{ success: boolean; remaining: number }> {
   const limiter = limiters[type];
 
-  // Graceful fallback for local development (no Upstash configured)
   if (!limiter) {
+    if (process.env.NODE_ENV === "production") {
+      console.error(`Rate limiter "${type}" unavailable in production`);
+      return { success: false, remaining: 0 };
+    }
     return { success: true, remaining: 999 };
   }
 

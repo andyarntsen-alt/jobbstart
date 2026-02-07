@@ -3,9 +3,12 @@ import getStripe from "@/lib/stripe";
 import { rateLimit } from "@/lib/rate-limit";
 import { PLANS, TOPUP_PRICE } from "@/lib/plans";
 import type { PlanId } from "@/lib/plans";
+import { siteConfig } from "@/lib/seo";
 
 const VALID_PLANS = ["enkel", "standard", "max", "pafyll"] as const;
 type CheckoutPlan = (typeof VALID_PLANS)[number];
+
+const ALLOWED_ORIGINS = [siteConfig.url, "http://localhost:3000"];
 
 function isValidPlan(plan: string): plan is CheckoutPlan {
   return VALID_PLANS.includes(plan as CheckoutPlan);
@@ -22,7 +25,8 @@ export async function POST(req: NextRequest) {
     }
 
     const { plan, returnUrl, userId } = await req.json();
-    const origin = req.headers.get("origin") || "http://localhost:3000";
+    const rawOrigin = req.headers.get("origin") || "";
+    const origin = ALLOWED_ORIGINS.includes(rawOrigin) ? rawOrigin : siteConfig.url;
 
     if (!plan || !isValidPlan(plan)) {
       return NextResponse.json({ error: "Ugyldig plan" }, { status: 400 });
