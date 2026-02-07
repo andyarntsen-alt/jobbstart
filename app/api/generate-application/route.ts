@@ -3,6 +3,7 @@ import getGroqClient from "@/lib/groq";
 import { buildSystemPrompt, buildUserPrompt } from "@/lib/prompts";
 import { rateLimit, getIp } from "@/lib/rate-limit";
 import { checkFreeTrialApplication, consumeFreeTrialApplication } from "@/lib/free-trial";
+import { verifyPlan } from "@/lib/supabase/verify-plan";
 import type { TemplateStyle } from "@/types/application";
 
 export async function POST(req: NextRequest) {
@@ -15,8 +16,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Free trial check for free users
-    const planId = req.headers.get("x-plan-id") || "free";
+    // Server-side plan verification (no longer trusts client header)
+    const { planId } = await verifyPlan(req.headers.get("authorization"));
     if (planId === "free") {
       const ip = getIp(req);
       const trial = await checkFreeTrialApplication(ip);

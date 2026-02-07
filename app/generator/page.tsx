@@ -59,7 +59,7 @@ export default function GeneratorPage() {
     addCredits,
   } = useAccess();
 
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -122,7 +122,10 @@ export default function GeneratorPage() {
     try {
       const res = await fetch("/api/improve-background", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-plan-id": access.plan },
+        headers: {
+          "Content-Type": "application/json",
+          ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+        },
         body: JSON.stringify({
           text: userBackground,
           jobDescription: jobDescription || undefined,
@@ -188,7 +191,10 @@ export default function GeneratorPage() {
     try {
       const res = await fetch("/api/generate-application", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-plan-id": access.plan },
+        headers: {
+          "Content-Type": "application/json",
+          ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+        },
         body: JSON.stringify({
           jobDescription,
           userBackground,

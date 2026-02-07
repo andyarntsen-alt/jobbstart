@@ -129,7 +129,7 @@ export default function CVForm() {
     hasFullPreview,
   } = useAccess();
 
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const debounceRef = useRef<NodeJS.Timeout>(null);
 
   function showPaywall(
@@ -283,7 +283,10 @@ export default function CVForm() {
     try {
       const res = await fetch("/api/cv/generate-summary", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-plan-id": access.plan },
+        headers: {
+          "Content-Type": "application/json",
+          ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+        },
         body: JSON.stringify({ experiences: filledExperiences }),
       });
       const result = await res.json();
@@ -460,7 +463,7 @@ export default function CVForm() {
                 onPaywall={() => showPaywall("KI-forbedring av erfaring", "cvImprove")}
                 onImproveUsed={consumeImproveCredit}
                 improveRemaining={improveExperienceRemaining}
-                planId={access.plan}
+                authToken={session?.access_token || ""}
               />
             ))}
             <Button

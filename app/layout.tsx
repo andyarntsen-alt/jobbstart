@@ -61,6 +61,21 @@ export const metadata: Metadata = {
     apple: [{ url: "/icon-192.png" }],
   },
 
+  keywords: [
+    "jobbsøknad",
+    "cv",
+    "søknadsbrev",
+    "jobbsøknad generator",
+    "cv-bygger",
+    "cv mal",
+    "KI jobbsøknad",
+    "lage cv",
+    "jobbsøknad mal",
+    "norsk jobbsøknad",
+    "finn.no søknad",
+    "søknadsgenerator",
+  ],
+
   robots: {
     index: true,
     follow: true,

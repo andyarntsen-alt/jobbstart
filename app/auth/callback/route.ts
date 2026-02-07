@@ -4,7 +4,9 @@ import { createClient } from "@supabase/supabase-js";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
-  const origin = req.headers.get("origin") || req.nextUrl.origin;
+
+  // Always redirect to our own origin — never trust the origin header
+  const safeRedirect = req.nextUrl.origin;
 
   if (code) {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -16,5 +18,5 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  return NextResponse.redirect(origin);
+  return NextResponse.redirect(safeRedirect);
 }

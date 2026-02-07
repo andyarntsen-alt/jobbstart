@@ -5,6 +5,7 @@ import {
   buildBackgroundImproveUserPrompt,
 } from "@/lib/prompts";
 import { rateLimit } from "@/lib/rate-limit";
+import { verifyPlan } from "@/lib/supabase/verify-plan";
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,8 +17,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Plan check: minimum "standard"
-    const planId = req.headers.get("x-plan-id") || "free";
+    // Server-side plan verification
+    const { planId } = await verifyPlan(req.headers.get("authorization"));
     if (planId === "free" || planId === "enkel") {
       return NextResponse.json(
         { error: "Denne funksjonen krever STANDARD-planen eller høyere." },

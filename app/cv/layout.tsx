@@ -6,6 +6,17 @@ import { getBreadcrumbSchema, getCVFAQSchema } from "@/lib/structured-data";
 export const metadata: Metadata = {
   title: pageSeo.cv.title,
   description: pageSeo.cv.description,
+  keywords: [
+    "cv bygger",
+    "cv mal",
+    "cv mal norsk",
+    "lage cv",
+    "profesjonell cv",
+    "cv generator",
+    "cv eksempel",
+    "cv maler gratis",
+    "norsk cv",
+  ],
   alternates: {
     canonical: "/cv",
   },

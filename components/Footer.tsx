@@ -30,6 +30,7 @@ export default function Footer() {
                 { label: "Priser", href: "#priser" },
                 { label: "Søknadsgenerator", href: "/generator" },
                 { label: "CV-bygger", href: "/cv" },
+                { label: "Blogg", href: "/blogg" },
               ].map((item) => (
                 <li key={item.label}>
                   <Link href={item.href} className="text-sm font-bold text-foreground/50 hover:text-foreground transition-colors uppercase tracking-wider">

@@ -5,6 +5,7 @@ import {
   buildSummaryUserPrompt,
 } from "@/lib/cv-prompts";
 import { rateLimit } from "@/lib/rate-limit";
+import { verifyPlan } from "@/lib/supabase/verify-plan";
 import type { CVExperience } from "@/types/cv";
 
 export async function POST(req: NextRequest) {
@@ -17,8 +18,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Plan check: minimum "standard"
-    const planId = req.headers.get("x-plan-id") || "free";
+    // Server-side plan verification
+    const { planId } = await verifyPlan(req.headers.get("authorization"));
     if (planId === "free" || planId === "enkel") {
       return NextResponse.json(
         { error: "Denne funksjonen krever STANDARD-planen eller høyere." },

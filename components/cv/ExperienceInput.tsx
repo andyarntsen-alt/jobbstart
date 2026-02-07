@@ -16,7 +16,7 @@ interface ExperienceInputProps {
   onPaywall: () => void;
   onImproveUsed: () => void;
   improveRemaining: number; // -1 = unlimited, 0+ = count
-  planId: string;
+  authToken: string;
 }
 
 export default function ExperienceInput({
@@ -27,7 +27,7 @@ export default function ExperienceInput({
   onPaywall,
   onImproveUsed,
   improveRemaining,
-  planId,
+  authToken,
 }: ExperienceInputProps) {
   const [isImproving, setIsImproving] = useState(false);
   const [improveError, setImproveError] = useState("");
@@ -48,7 +48,10 @@ export default function ExperienceInput({
     try {
       const res = await fetch("/api/cv/improve", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-plan-id": planId },
+        headers: {
+          "Content-Type": "application/json",
+          ...(authToken && { Authorization: `Bearer ${authToken}` }),
+        },
         body: JSON.stringify({
           text: experience.description,
           title: experience.title,

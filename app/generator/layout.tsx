@@ -6,6 +6,16 @@ import { getBreadcrumbSchema, getGeneratorFAQSchema } from "@/lib/structured-dat
 export const metadata: Metadata = {
   title: pageSeo.generator.title,
   description: pageSeo.generator.description,
+  keywords: [
+    "jobbsøknad generator",
+    "lag jobbsøknad",
+    "søknadsbrev KI",
+    "automatisk jobbsøknad",
+    "PSTAR-metoden",
+    "finn.no søknad",
+    "søknad mal",
+    "jobbsøknad eksempel",
+  ],
   alternates: {
     canonical: "/generator",
   },
