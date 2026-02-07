@@ -95,6 +95,10 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
 
   category: "technology",
+
+  verification: {
+    google: "6RdZfXenqZuR1C1JPBY9aTTWSI_RoOHa4oqbEBPT9gc",
+  },
 };
 
 export default function RootLayout({
