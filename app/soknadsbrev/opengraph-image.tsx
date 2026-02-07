@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Lag jobbsøknad med KI | CVpilot";
+export const alt = "Søknadsbrev 2026 — Komplett guide med eksempler | CVpilot";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -41,7 +41,7 @@ export default function OGImage() {
             marginBottom: 32,
           }}
         >
-          LAG JOBBSØKNAD
+          SØKNADSBREV
         </div>
         <div
           style={{
@@ -54,7 +54,7 @@ export default function OGImage() {
             marginBottom: 48,
           }}
         >
-          MED KI.
+          GUIDE 2026.
         </div>
         <div
           style={{
@@ -64,7 +64,7 @@ export default function OGImage() {
             opacity: 0.5,
           }}
         >
-          FINN.NO-INTEGRASJON • PSTAR-METODEN • PDF & WORD EKSPORT
+          KOMPLETT GUIDE MED EKSEMPLER FOR NORSK ARBEIDSLIV
         </div>
       </div>
     ),

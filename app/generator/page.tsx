@@ -239,7 +239,7 @@ export default function GeneratorPage() {
         <div className="mx-auto flex h-[80px] max-w-[1400px] items-center justify-between px-5 md:px-8 lg:px-10">
           <Link href="/">
             <span className="text-2xl font-extrabold tracking-tight">
-              JOBBSTART
+              CVPILOT
             </span>
           </Link>
           <Button variant="outline" size="sm" className="gap-2" asChild>

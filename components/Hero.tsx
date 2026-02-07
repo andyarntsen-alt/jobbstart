@@ -21,7 +21,7 @@ export default function Hero() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="mb-8 flex items-center gap-3">
-              <span className="industrial-label">/ JOBBSTART</span>
+              <span className="industrial-label">/ CVPILOT</span>
               <div className="h-[1px] w-20 bg-foreground/10" />
             </div>
             <h1 className="text-huge mb-0">

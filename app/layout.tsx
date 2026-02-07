@@ -103,8 +103,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="no" className={jetbrainsMono.variable}>
-      <body className="font-[family-name:var(--font-mono)] antialiased">
+    <html lang="nb" className={jetbrainsMono.variable} style={{ colorScheme: "light" }}>
+      <body className="font-[family-name:var(--font-mono)] antialiased" style={{ backgroundColor: "#f2f2f2", color: "#000000" }}>
         <AuthProvider>
           {children}
           <CookieConsent />

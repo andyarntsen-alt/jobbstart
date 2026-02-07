@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Bygg profesjonell CV med KI | JobbStart";
+export const alt = "Bygg profesjonell CV med KI | CVpilot";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -29,7 +29,7 @@ export default function OGImage() {
             marginBottom: 24,
           }}
         >
-          / JOBBSTART
+          / CVPILOT
         </div>
         <div
           style={{

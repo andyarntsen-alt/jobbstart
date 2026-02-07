@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Lag jobbsøknad med KI | CVpilot";
+export const alt = "Jobbsøknad Mal 2026 — Gratis maler og eksempler | CVpilot";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -33,7 +33,7 @@ export default function OGImage() {
         </div>
         <div
           style={{
-            fontSize: 72,
+            fontSize: 64,
             fontWeight: 900,
             color: "#000000",
             lineHeight: 0.9,
@@ -41,11 +41,11 @@ export default function OGImage() {
             marginBottom: 32,
           }}
         >
-          LAG JOBBSØKNAD
+          JOBBSØKNAD MAL
         </div>
         <div
           style={{
-            fontSize: 72,
+            fontSize: 64,
             fontWeight: 900,
             color: "#000000",
             opacity: 0.15,
@@ -54,7 +54,7 @@ export default function OGImage() {
             marginBottom: 48,
           }}
         >
-          MED KI.
+          PSTAR-METODEN.
         </div>
         <div
           style={{
@@ -64,7 +64,7 @@ export default function OGImage() {
             opacity: 0.5,
           }}
         >
-          FINN.NO-INTEGRASJON • PSTAR-METODEN • PDF & WORD EKSPORT
+          GRATIS MALER OG EKSEMPLER FOR NORSK ARBEIDSLIV 2026
         </div>
       </div>
     ),

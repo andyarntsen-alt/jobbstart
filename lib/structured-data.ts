@@ -25,20 +25,111 @@ export function getWebApplicationSchema() {
     description: siteConfig.description,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
-    offers: {
-      "@type": "AggregateOffer",
-      lowPrice: "49",
-      highPrice: "249",
-      priceCurrency: "NOK",
-      offerCount: 3,
-    },
-    inLanguage: "no",
+    offers: [
+      {
+        "@type": "Offer",
+        name: "Enkel",
+        price: "49",
+        priceCurrency: "NOK",
+        description:
+          "1 søknad med PSTAR-metoden, PDF & Word eksport, 3 brevmaler",
+      },
+      {
+        "@type": "Offer",
+        name: "Standard",
+        price: "149",
+        priceCurrency: "NOK",
+        description:
+          "5 søknader + full CV-bygger, KI-sammendrag, 10 CV-maler, FINN.no-integrasjon",
+      },
+      {
+        "@type": "Offer",
+        name: "Max",
+        price: "249",
+        priceCurrency: "NOK",
+        description:
+          "20 søknader, ubegrenset KI-forbedring, full CV-tilgang, alle maler",
+      },
+    ],
+    inLanguage: "nb",
     featureList: [
       "KI-generert jobbsøknad",
       "CV-bygger med 10 maler",
       "FINN.no-integrasjon",
       "PDF og Word eksport",
       "PSTAR-metoden",
+    ],
+  };
+}
+
+export function getHowToWriteApplicationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: "Hvordan lage jobbsøknad med KI",
+    description:
+      "Lag en profesjonell, skreddersydd jobbsøknad på under 2 minutter med CVpilot.",
+    totalTime: "PT2M",
+    tool: {
+      "@type": "SoftwareApplication",
+      name: "CVpilot",
+      url: siteConfig.url,
+    },
+    step: [
+      {
+        "@type": "HowToStep",
+        name: "Lim inn stillingsannonsen",
+        text: "Kopier URL-en fra FINN.no eller lim inn stillingsannonsen manuelt. Legg til din bakgrunn og kontaktinformasjon.",
+        position: 1,
+      },
+      {
+        "@type": "HowToStep",
+        name: "KI skriver søknaden",
+        text: "Velg brevmal (Konservativ, Moderne eller Kreativ) og la KI-en generere en skreddersydd søknad basert på PSTAR-metoden.",
+        position: 2,
+      },
+      {
+        "@type": "HowToStep",
+        name: "Last ned og send",
+        text: "Rediger teksten i editoren, velg eksportlayout, og last ned som PDF eller Word-dokument.",
+        position: 3,
+      },
+    ],
+  };
+}
+
+export function getHowToBuildCVSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: "Hvordan lage CV med KI",
+    description:
+      "Bygg en profesjonell CV med KI-drevne forslag og 10 maler tilpasset norsk arbeidsmarked.",
+    totalTime: "PT5M",
+    tool: {
+      "@type": "SoftwareApplication",
+      name: "CVpilot",
+      url: siteConfig.url,
+    },
+    step: [
+      {
+        "@type": "HowToStep",
+        name: "Fyll inn din informasjon",
+        text: "Følg 6-stegs veiviseren: personalia, sammendrag, arbeidserfaring, utdanning, ferdigheter og språk.",
+        position: 1,
+      },
+      {
+        "@type": "HowToStep",
+        name: "La KI forbedre innholdet",
+        text: "Bruk KI til å generere profesjonelt sammendrag og forbedre erfaringsbeskrivelsene dine med konkrete resultater.",
+        position: 2,
+      },
+      {
+        "@type": "HowToStep",
+        name: "Velg mal og last ned",
+        text: "Velg blant 10 profesjonelle maler (Nordisk, Oslo, Eksekutiv, Kreativ m.fl.) og last ned som PDF.",
+        position: 3,
+      },
     ],
   };
 }
@@ -50,7 +141,7 @@ export function getFAQSchema() {
     mainEntity: [
       {
         "@type": "Question",
-        name: "Hvordan fungerer JobbStart sin søknadsgenerator?",
+        name: "Hvordan fungerer CVpilot sin søknadsgenerator?",
         acceptedAnswer: {
           "@type": "Answer",
           text: "Lim inn en stillingsannonse fra FINN.no eller manuelt, velg brevmal (Konservativ, Moderne eller Kreativ), og la KI-en generere en skreddersydd søknad basert på din bakgrunn. Ferdig på under 2 minutter.",
@@ -58,15 +149,15 @@ export function getFAQSchema() {
       },
       {
         "@type": "Question",
-        name: "Hva koster det å bruke JobbStart?",
+        name: "Hva koster det å bruke CVpilot?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "JobbStart tilbyr tre pakker: Enkel (49 kr for 1 søknad), Standard (149 kr for 5 søknader + CV-bygger), og Max (249 kr for 20 søknader + full CV med KI-forbedring).",
+          text: "CVpilot tilbyr tre pakker: Enkel (49 kr for 1 søknad), Standard (149 kr for 5 søknader + CV-bygger), og Max (249 kr for 20 søknader + full CV med KI-forbedring).",
         },
       },
       {
         "@type": "Question",
-        name: "Kan jeg lage CV med JobbStart?",
+        name: "Kan jeg lage CV med CVpilot?",
         acceptedAnswer: {
           "@type": "Answer",
           text: "Ja! CV-byggeren har en 6-stegs veiviser med auto-lagring, KI-generert sammendrag, KI-forbedrede erfaringsbeskrivelser, og 10 profesjonelle PDF-maler tilpasset norsk arbeidsmarked.",
@@ -74,10 +165,10 @@ export function getFAQSchema() {
       },
       {
         "@type": "Question",
-        name: "Støtter JobbStart FINN.no?",
+        name: "Støtter CVpilot FINN.no?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Ja, du kan lime inn en FINN.no-annonse-URL direkte, og JobbStart henter automatisk ut stillingsannonseteksten slik at du slipper å kopiere den manuelt.",
+          text: "Ja, du kan lime inn en FINN.no-annonse-URL direkte, og CVpilot henter automatisk ut stillingsannonseteksten slik at du slipper å kopiere den manuelt.",
         },
       },
     ],

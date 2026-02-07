@@ -15,7 +15,7 @@ export default function Footer() {
           <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="group mb-4 md:mb-8 block">
               <span className="text-xl font-black uppercase tracking-[-0.05em] text-foreground">
-                Jobb<span className="opacity-40">Start</span>
+                CV<span className="opacity-40">pilot</span>
               </span>
             </Link>
             <p className="text-sm text-foreground/40 font-bold max-w-sm leading-tight mb-4 md:mb-6">
@@ -30,6 +30,8 @@ export default function Footer() {
                 { label: "Priser", href: "#priser" },
                 { label: "Søknadsgenerator", href: "/generator" },
                 { label: "CV-bygger", href: "/cv" },
+                { label: "CV-maler", href: "/cv-mal" },
+                { label: "Søknadsmaler", href: "/jobbsoknad-mal" },
                 { label: "Blogg", href: "/blogg" },
               ].map((item) => (
                 <li key={item.label}>
@@ -62,7 +64,7 @@ export default function Footer() {
             <div className="space-y-3 md:space-y-6">
               <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 opacity-30" />
-                <span className="text-sm font-black text-foreground">kontakt@jobbstart.no</span>
+                <span className="text-sm font-black text-foreground">kontakt@cvpilot.no</span>
               </div>
               <div className="flex items-center gap-3">
                 <Globe className="h-4 w-4 opacity-30" />
@@ -73,7 +75,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-foreground/5">
-          <span className="industrial-label !opacity-20">&copy; {new Date().getFullYear()} JobbStart</span>
+          <span className="industrial-label !opacity-20">&copy; {new Date().getFullYear()} CVpilot</span>
         </div>
       </div>
     </footer>

@@ -1,12 +1,12 @@
 {
-  "name": "JobbStart",
-  "short_name": "JobbStart",
+  "name": "CVpilot",
+  "short_name": "CVpilot",
   "description": "KI-drevet søknad og CV-generator for norsk arbeidsliv",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f2f2f2",
   "theme_color": "#f2f2f2",
-  "lang": "no",
+  "lang": "nb",
   "icons": [
     {
       "src": "/icon-192.png",

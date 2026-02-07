@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Personvernerklæring",
   description:
-    "Les om hvordan JobbStart behandler dine personopplysninger, bruk av KI, og dine rettigheter under GDPR.",
+    "Les om hvordan CVpilot behandler dine personopplysninger, bruk av KI, og dine rettigheter under GDPR.",
 };
 
 const sections = [
@@ -14,13 +14,13 @@ const sections = [
     label: "/ BEHANDLINGSANSVARLIG",
     title: "Hvem er ansvarlig?",
     content:
-      "JobbStart er ansvarlig for behandlingen av personopplysninger som beskrevet i denne personvernerklæringen. Kontakt oss på kontakt@jobbstart.no ved spørsmål.",
+      "CVpilot er ansvarlig for behandlingen av personopplysninger som beskrevet i denne personvernerklæringen. Kontakt oss på kontakt@cvpilot.no ved spørsmål.",
   },
   {
     label: "/ DATAINNSAMLING",
     title: "Hvilke data samler vi inn?",
     content:
-      "JobbStart lagrer CV-data og søknadstekst lokalt i din nettleser (localStorage). Vi samler ikke inn eller lagrer personopplysninger på våre servere. Informasjon du skriver inn (stillingsannonse, bakgrunn, CV-detaljer) sendes til vår KI-tjeneste for å generere tekst, men lagres ikke etter at svaret er levert.",
+      "CVpilot lagrer CV-data og søknadstekst lokalt i din nettleser (localStorage). Vi samler ikke inn eller lagrer personopplysninger på våre servere. Informasjon du skriver inn (stillingsannonse, bakgrunn, CV-detaljer) sendes til vår KI-tjeneste for å generere tekst, men lagres ikke etter at svaret er levert.",
   },
   {
     label: "/ BRUK AV KI",
@@ -32,7 +32,7 @@ const sections = [
     label: "/ INFORMASJONSKAPSLER",
     title: "Cookies og analyse",
     content:
-      "JobbStart bruker Vercel Analytics for anonym bruksstatistikk. Dette inkluderer ikke personlig identifiserbar informasjon. Vi bruker localStorage for å lagre CV-data og brukerpreferanser lokalt i din nettleser. Ingen tredjeparts sporings-cookies benyttes.",
+      "CVpilot bruker Vercel Analytics for anonym bruksstatistikk. Dette inkluderer ikke personlig identifiserbar informasjon. Vi bruker localStorage for å lagre CV-data og brukerpreferanser lokalt i din nettleser. Ingen tredjeparts sporings-cookies benyttes.",
   },
   {
     label: "/ TREDJEPARTER",
@@ -44,7 +44,7 @@ const sections = [
     label: "/ DINE RETTIGHETER",
     title: "Rettigheter under GDPR",
     content:
-      "Du har rett til innsyn, retting, sletting og dataportabilitet. Siden vi ikke lagrer personopplysninger på våre servere, kan du slette alle lokalt lagrede data ved å tømme nettleserens localStorage. For spørsmål om dine rettigheter, kontakt oss på kontakt@jobbstart.no.",
+      "Du har rett til innsyn, retting, sletting og dataportabilitet. Siden vi ikke lagrer personopplysninger på våre servere, kan du slette alle lokalt lagrede data ved å tømme nettleserens localStorage. For spørsmål om dine rettigheter, kontakt oss på kontakt@cvpilot.no.",
   },
   {
     label: "/ ENDRINGER",
@@ -61,7 +61,7 @@ export default function PersonvernPage() {
         <div className="mx-auto flex h-[80px] max-w-[1400px] items-center justify-between px-5 md:px-10">
           <Link href="/">
             <span className="text-2xl font-extrabold tracking-tight">
-              JOBBSTART
+              CVPILOT
             </span>
           </Link>
           <Button variant="outline" size="sm" className="gap-2" asChild>
@@ -100,10 +100,10 @@ export default function PersonvernPage() {
             <p className="text-sm text-foreground/60 leading-relaxed">
               Har du spørsmål om personvern? Kontakt oss på{" "}
               <a
-                href="mailto:kontakt@jobbstart.no"
+                href="mailto:kontakt@cvpilot.no"
                 className="text-foreground underline decoration-foreground/20 hover:decoration-foreground transition-colors"
               >
-                kontakt@jobbstart.no
+                kontakt@cvpilot.no
               </a>
             </p>
           </div>

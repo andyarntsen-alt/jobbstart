@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { blogPosts, getBlogPost, getBlogArticleSchema } from "@/lib/blog";
+import { ArrowLeft, ChevronRight } from "lucide-react";
+import Breadcrumb from "@/components/Breadcrumb";
+import {
+  blogPosts,
+  getBlogPost,
+  getBlogArticleSchema,
+  getRelatedPosts,
+} from "@/lib/blog";
 import { siteConfig } from "@/lib/seo";
 import { getBreadcrumbSchema } from "@/lib/structured-data";
 
@@ -45,6 +51,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const post = getBlogPost(slug);
   if (!post) notFound();
 
+  const relatedPosts = getRelatedPosts(slug, 3);
   const articleSchema = getBlogArticleSchema(post);
   const breadcrumb = getBreadcrumbSchema([
     { name: "Hjem", url: "/" },
@@ -101,7 +108,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="mx-auto flex h-[80px] max-w-[1400px] items-center justify-between px-5 md:px-8 lg:px-10">
           <Link href="/">
             <span className="text-2xl font-extrabold tracking-tight">
-              JOBBSTART
+              CVPILOT
             </span>
           </Link>
           <Link
@@ -115,6 +122,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       </header>
 
       <main className="mx-auto max-w-[700px] px-5 md:px-8 lg:px-10 py-12 md:py-20">
+        <Breadcrumb
+          items={[
+            { name: "Hjem", href: "/" },
+            { name: "Blogg", href: "/blogg" },
+            { name: post.title, href: `/blogg/${post.slug}` },
+          ]}
+        />
         <article>
           <div className="mb-8">
             <span className="text-[11px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">
@@ -172,6 +186,33 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </Link>
           </div>
         </div>
+
+        {relatedPosts.length > 0 && (
+          <div className="mt-12 border-t border-border pt-8">
+            <h2 className="text-xs font-bold uppercase tracking-widest mb-6">
+              / Relaterte artikler
+            </h2>
+            <div className="space-y-4">
+              {relatedPosts.map((rp) => (
+                <Link
+                  key={rp.slug}
+                  href={`/blogg/${rp.slug}`}
+                  className="flex items-center justify-between group py-3 border-b border-border/50 last:border-0"
+                >
+                  <div>
+                    <span className="text-sm font-semibold group-hover:text-foreground/70 transition-colors">
+                      {rp.title}
+                    </span>
+                    <p className="text-xs text-muted-foreground mt-1 line-clamp-1">
+                      {rp.description}
+                    </p>
+                  </div>
+                  <ChevronRight className="h-4 w-4 shrink-0 text-foreground/20 group-hover:text-foreground/50 transition-colors ml-4" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

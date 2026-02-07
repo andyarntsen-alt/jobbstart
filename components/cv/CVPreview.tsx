@@ -179,7 +179,7 @@ export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreview
         visiblePercent={0.3}
         ctaText="Lås opp full CV-forhåndsvisning og PDF-nedlasting"
         onUpgrade={onUpgrade}
-        watermarkText="JOBBSTART.NO"
+        watermarkText="CVPILOT.NO"
       >
         {content}
       </PaywallOverlay>

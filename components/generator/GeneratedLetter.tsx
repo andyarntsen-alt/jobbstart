@@ -43,7 +43,7 @@ export default function GeneratedLetter({
           visiblePercent={0.6}
           ctaText="Lås opp hele søknaden — fra 49 kr"
           onUpgrade={onUpgrade}
-          watermarkText="JOBBSTART.NO"
+          watermarkText="CVPILOT.NO"
         >
           <div className="border border-border p-4 min-h-[400px] font-serif text-[15px] leading-relaxed whitespace-pre-wrap select-none">
             {text}

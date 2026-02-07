@@ -30,7 +30,7 @@ export default function Header() {
         >
           <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="group flex items-center gap-2">
             <span className="text-lg font-black uppercase tracking-[-0.05em] text-foreground">
-              Jobb<span className="opacity-40">Start</span>
+              CV<span className="opacity-40">pilot</span>
             </span>
           </Link>
         </motion.div>

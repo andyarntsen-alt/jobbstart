@@ -10,24 +10,24 @@ import {
 
 const faqs = [
   {
-    question: "Hvordan fungerer JobbStart sin søknadsgenerator?",
+    question: "Hvordan fungerer CVpilot sin søknadsgenerator?",
     answer:
       "Lim inn en stillingsannonse fra FINN.no eller manuelt, velg brevmal (Konservativ, Moderne eller Kreativ), og la KI-en generere en skreddersydd søknad basert på din bakgrunn. Ferdig på under 2 minutter.",
   },
   {
-    question: "Hva koster det å bruke JobbStart?",
+    question: "Hva koster det å bruke CVpilot?",
     answer:
-      "JobbStart tilbyr tre pakker: Enkel (49 kr for 1 søknad), Standard (149 kr for 5 søknader + CV-bygger), og Max (249 kr for 20 søknader + full CV med KI-forbedring).",
+      "CVpilot tilbyr tre pakker: Enkel (49 kr for 1 søknad), Standard (149 kr for 5 søknader + CV-bygger), og Max (249 kr for 20 søknader + full CV med KI-forbedring).",
   },
   {
-    question: "Kan jeg lage CV med JobbStart?",
+    question: "Kan jeg lage CV med CVpilot?",
     answer:
       "Ja! CV-byggeren har en 6-stegs veiviser med auto-lagring, KI-generert sammendrag, KI-forbedrede erfaringsbeskrivelser, og 10 profesjonelle PDF-maler tilpasset norsk arbeidsmarked.",
   },
   {
-    question: "Støtter JobbStart FINN.no?",
+    question: "Støtter CVpilot FINN.no?",
     answer:
-      "Ja, du kan lime inn en FINN.no-annonse-URL direkte, og JobbStart henter automatisk ut stillingsannonseteksten slik at du slipper å kopiere den manuelt.",
+      "Ja, du kan lime inn en FINN.no-annonse-URL direkte, og CVpilot henter automatisk ut stillingsannonseteksten slik at du slipper å kopiere den manuelt.",
   },
 ];
 

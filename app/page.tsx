@@ -12,6 +12,8 @@ import {
   getOrganizationSchema,
   getWebApplicationSchema,
   getFAQSchema,
+  getHowToWriteApplicationSchema,
+  getHowToBuildCVSchema,
 } from "@/lib/structured-data";
 
 export default function Home() {
@@ -20,6 +22,8 @@ export default function Home() {
       <JsonLd data={getOrganizationSchema()} />
       <JsonLd data={getWebApplicationSchema()} />
       <JsonLd data={getFAQSchema()} />
+      <JsonLd data={getHowToWriteApplicationSchema()} />
+      <JsonLd data={getHowToBuildCVSchema()} />
       <main>
         <Header />
         <Hero />
