@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import getStripe from "@/lib/stripe";
 import { getSupabaseServer } from "@/lib/supabase/server";
-import { PLANS } from "@/lib/plans";
+import { PLANS, TOPUP_CREDITS } from "@/lib/plans";
 import type { PlanId } from "@/lib/plans";
 
 export async function POST(req: NextRequest) {
@@ -27,12 +27,12 @@ export async function POST(req: NextRequest) {
         const email = session.customer_details?.email;
         const amount = session.amount_total ?? 0;
 
-        console.error(`[PAYMENT] plan=${plan} email=${email} userId=${userId} session=${session.id}`);
+        console.log(`[PAYMENT] plan=${plan} email=${email} userId=${userId} session=${session.id}`);
 
         const supabase = getSupabaseServer();
         if (supabase && plan) {
           // Insert purchase record
-          await supabase.from("purchases").insert({
+          const { error: purchaseError } = await supabase.from("purchases").insert({
             user_id: userId || null,
             plan,
             amount,
@@ -41,21 +41,56 @@ export async function POST(req: NextRequest) {
             stripe_email: email || null,
           });
 
-          // Update user profile if userId is present
+          if (purchaseError) {
+            console.error("[PAYMENT] Purchase insert failed:", purchaseError);
+          }
+
+          // Update/create user profile
           if (userId && plan !== "pafyll") {
             const planDef = PLANS[plan as PlanId];
             if (planDef) {
-              await supabase
+              const { error: profileError } = await supabase
+                .from("profiles")
+                .upsert(
+                  {
+                    id: userId,
+                    plan,
+                    applications_remaining: planDef.applicationCredits,
+                    applications_used: 0,
+                    improve_experience_used: 0,
+                    purchased_at: new Date().toISOString(),
+                    stripe_session_id: session.id,
+                  },
+                  { onConflict: "id" }
+                );
+
+              if (profileError) {
+                console.error("[PAYMENT] Profile upsert failed:", profileError);
+              }
+            }
+          }
+
+          // Handle top-up: add credits to existing profile
+          if (userId && plan === "pafyll") {
+            const { data: profile } = await supabase
+              .from("profiles")
+              .select("applications_remaining")
+              .eq("id", userId)
+              .single();
+
+            if (profile) {
+              const { error: topupError } = await supabase
                 .from("profiles")
                 .update({
-                  plan,
-                  applications_remaining: planDef.applicationCredits,
-                  applications_used: 0,
-                  improve_experience_used: 0,
-                  purchased_at: new Date().toISOString(),
-                  stripe_session_id: session.id,
+                  applications_remaining: profile.applications_remaining + TOPUP_CREDITS,
                 })
                 .eq("id", userId);
+
+              if (topupError) {
+                console.error("[PAYMENT] Top-up update failed:", topupError);
+              }
+            } else {
+              console.error("[PAYMENT] Top-up: profile not found for userId:", userId);
             }
           }
         }
