@@ -14,6 +14,12 @@ import type { PlanId } from "@/lib/plans";
 
 const UPGRADE_ORDER: PlanId[] = ["enkel", "standard", "max"];
 
+const PLAN_HIGHLIGHTS: Record<string, string[]> = {
+  enkel: ["1 søknad", "PDF & Word eksport"],
+  standard: ["5 søknader", "CV-bygger", "KI-forbedring (10×)"],
+  max: ["20 søknader", "Ubegrenset KI-forbedring", "Alt i STANDARD +"],
+};
+
 interface PaywallPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -58,12 +64,12 @@ export default function PaywallPopup({
                   onOpenChange(false);
                 }}
               >
-                <div>
+                <div className="min-w-0">
                   <p className="text-xs font-semibold uppercase tracking-wider">
                     {plan.name}
                   </p>
-                  <p className="text-[11px] text-muted-foreground">
-                    {plan.description}
+                  <p className="text-[10px] text-muted-foreground mt-0.5">
+                    {PLAN_HIGHLIGHTS[planId]?.join(" · ")}
                   </p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
