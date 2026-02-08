@@ -118,7 +118,7 @@ function buildNordisk(doc: jsPDF, data: CVData) {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(8);
       doc.setTextColor(153, 153, 153);
-      doc.text(`${exp.from} – ${exp.to}`, margin + w, y, { align: "right" });
+      doc.text(`${exp.from} - ${exp.to}`, margin + w, y, { align: "right" });
       y += 4.5;
 
       if (exp.company) {
@@ -247,7 +247,7 @@ function buildNordisk(doc: jsPDF, data: CVData) {
       doc.setTextColor(51, 51, 51);
       for (const lang of data.skills.languages) {
         y = checkPage(doc, y, margin, 6);
-        doc.text(`${lang.name} — ${lang.level}`, margin, y);
+        doc.text(`${lang.name}, ${lang.level}`, margin, y);
         y += 4;
       }
       y += 3;
@@ -370,7 +370,7 @@ function buildOslo(doc: jsPDF, data: CVData) {
       doc.setFontSize(7.5);
       doc.setTextColor(160, 168, 184);
       for (const lang of data.skills.languages) {
-        doc.text(`${lang.name} — ${lang.level}`, sideM + 2, sy);
+        doc.text(`${lang.name}, ${lang.level}`, sideM + 2, sy);
         sy += 3.8;
       }
       sy += 4;
@@ -450,7 +450,7 @@ function buildOslo(doc: jsPDF, data: CVData) {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(8);
       doc.setTextColor(130, 130, 130);
-      doc.text(`${exp.from} – ${exp.to}`, mainX + mainW, y, { align: "right" });
+      doc.text(`${exp.from} - ${exp.to}`, mainX + mainW, y, { align: "right" });
       y += 4;
 
       if (exp.company) {
@@ -638,7 +638,7 @@ function buildEksekutiv(doc: jsPDF, data: CVData) {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(8);
       doc.setTextColor(130, 130, 130);
-      doc.text(`${exp.from} – ${exp.to}`, margin + w, y, { align: "right" });
+      doc.text(`${exp.from} - ${exp.to}`, margin + w, y, { align: "right" });
       y += 4;
 
       if (exp.company) {
@@ -757,7 +757,7 @@ function buildEksekutiv(doc: jsPDF, data: CVData) {
       doc.setTextColor(51, 51, 51);
       for (const lang of data.skills.languages) {
         y = checkPage(doc, y, margin, 6);
-        doc.text(`${lang.name} — ${lang.level}`, margin, y);
+        doc.text(`${lang.name}, ${lang.level}`, margin, y);
         y += 3.8;
       }
       y += 3;
@@ -882,7 +882,7 @@ function buildKreativ(doc: jsPDF, data: CVData) {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(8);
       doc.setTextColor(130, 130, 130);
-      doc.text(`${exp.from} – ${exp.to}`, contentX + w, y, { align: "right" });
+      doc.text(`${exp.from} - ${exp.to}`, contentX + w, y, { align: "right" });
       y += 4;
 
       if (exp.company) {
@@ -1131,7 +1131,7 @@ function buildKompakt(doc: jsPDF, data: CVData) {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7);
     doc.setTextColor(100, 100, 100);
-    doc.text(`${exp.company || ""}  ·  ${exp.from} – ${exp.to}`, margin, ly);
+    doc.text(`${exp.company || ""}  ·  ${exp.from} - ${exp.to}`, margin, ly);
     ly += 3.5;
 
     if (exp.bullets.length > 0) {
@@ -1228,7 +1228,7 @@ function buildKompakt(doc: jsPDF, data: CVData) {
       doc.setFontSize(7.5);
       doc.setTextColor(51, 51, 51);
       for (const lang of data.skills.languages) {
-        doc.text(`${lang.name} — ${lang.level}`, rightX, ry);
+        doc.text(`${lang.name}, ${lang.level}`, rightX, ry);
         ry += 3.2;
       }
       ry += 3;
@@ -1355,7 +1355,7 @@ function buildTidslinje(doc: jsPDF, data: CVData) {
       doc.setFont("courier", "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(120, 120, 120);
-      doc.text(`${exp.from} – ${exp.to}`, timelineX - 3, y, { align: "right" });
+      doc.text(`${exp.from} - ${exp.to}`, timelineX - 3, y, { align: "right" });
 
       // Title right of timeline
       doc.setFont("helvetica", "bold");
@@ -1473,7 +1473,7 @@ function buildTidslinje(doc: jsPDF, data: CVData) {
       doc.setTextColor(40, 40, 40);
       for (const lang of data.skills.languages) {
         y = checkPage(doc, y, margin, 6);
-        doc.text(`${lang.name} — ${lang.level}`, contentX, y);
+        doc.text(`${lang.name}, ${lang.level}`, contentX, y);
         y += 4;
       }
       y += 3;
@@ -1599,7 +1599,7 @@ function buildFjord(doc: jsPDF, data: CVData) {
       doc.setFontSize(7.5);
       doc.setTextColor(...cream);
       for (const lang of data.skills.languages) {
-        doc.text(`${lang.name} — ${lang.level}`, sideX + sideM, sy);
+        doc.text(`${lang.name}, ${lang.level}`, sideX + sideM, sy);
         sy += 3.5;
       }
       sy += 4;
@@ -1672,7 +1672,7 @@ function buildFjord(doc: jsPDF, data: CVData) {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(130, 130, 130);
-      doc.text(`${exp.from} – ${exp.to}`, mainM + mainW, y, { align: "right" });
+      doc.text(`${exp.from} - ${exp.to}`, mainM + mainW, y, { align: "right" });
       y += 4.5;
 
       if (exp.company) {
@@ -1837,7 +1837,7 @@ function buildStavanger(doc: jsPDF, data: CVData) {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(8);
       doc.setTextColor(130, 130, 130);
-      doc.text(`${exp.from} – ${exp.to}`, margin + w, y, { align: "right" });
+      doc.text(`${exp.from} - ${exp.to}`, margin + w, y, { align: "right" });
       y += 4;
 
       if (exp.company) {
@@ -1854,7 +1854,7 @@ function buildStavanger(doc: jsPDF, data: CVData) {
         doc.setTextColor(40, 40, 40);
         for (const bullet of exp.bullets) {
           y = checkPage(doc, y, margin, 8);
-          const lines = wrap(doc, `–  ${bullet}`, w);
+          const lines = wrap(doc, `·  ${bullet}`, w);
           for (const line of lines) {
             doc.text(line, margin, y);
             y += 3.8;
@@ -1940,7 +1940,7 @@ function buildStavanger(doc: jsPDF, data: CVData) {
       doc.setTextColor(40, 40, 40);
       for (const lang of data.skills.languages) {
         y = checkPage(doc, y, margin, 6);
-        doc.text(`${lang.name} — ${lang.level}`, margin, y);
+        doc.text(`${lang.name}, ${lang.level}`, margin, y);
         y += 3.8;
       }
       y += 3;
@@ -2014,7 +2014,7 @@ function buildDiplomatisk(doc: jsPDF, data: CVData) {
     doc.setFont("courier", "normal");
     doc.setFontSize(7);
     doc.setTextColor(100, 100, 100);
-    doc.text(contactParts.join("  —  "), A4_W / 2, y, { align: "center" });
+    doc.text(contactParts.join("  |  "), A4_W / 2, y, { align: "center" });
     y += 5;
   }
 
@@ -2075,7 +2075,7 @@ function buildDiplomatisk(doc: jsPDF, data: CVData) {
       doc.setFont("courier", "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(100, 100, 100);
-      doc.text(`${exp.from} – ${exp.to}`, margin + w, y, { align: "right" });
+      doc.text(`${exp.from} - ${exp.to}`, margin + w, y, { align: "right" });
       y += 4;
 
       if (exp.company) {
@@ -2176,7 +2176,7 @@ function buildDiplomatisk(doc: jsPDF, data: CVData) {
       doc.setTextColor(30, 30, 30);
       for (const lang of data.skills.languages) {
         y = checkPage(doc, y, margin, 6);
-        doc.text(`${lang.name} — ${lang.level}`, margin, y);
+        doc.text(`${lang.name}, ${lang.level}`, margin, y);
         y += 4;
       }
       y += 3;
@@ -2305,7 +2305,7 @@ function buildBergen(doc: jsPDF, data: CVData) {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(100, 80, 92);
-      doc.text(`${exp.from} – ${exp.to}`, dividerX - 3, y, { align: "right" });
+      doc.text(`${exp.from} - ${exp.to}`, dividerX - 3, y, { align: "right" });
 
       // Title in right column
       doc.setFont("helvetica", "bold");
@@ -2416,7 +2416,7 @@ function buildBergen(doc: jsPDF, data: CVData) {
       doc.setFontSize(8.5);
       doc.setTextColor(35, 35, 35);
       for (const lang of data.skills.languages) {
-        doc.text(`${lang.name} — ${lang.level}`, contentX, y);
+        doc.text(`${lang.name}, ${lang.level}`, contentX, y);
         y += 3.8;
       }
       y += 3;

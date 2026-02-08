@@ -48,7 +48,7 @@ const benefits = [
   {
     title: "10 PROFESJONELLE MALER",
     description:
-      "Fra minimalistisk Nordisk til fargerik Bergen — 10 unike CV-maler med ulike layouter, farger og stiler. Alle tilpasset norsk standard.",
+      "Fra minimalistisk Nordisk til fargerik Bergen, 10 unike CV-maler med ulike layouter, farger og stiler. Alle tilpasset norsk standard.",
     icon: Palette,
   },
   {
@@ -74,7 +74,7 @@ const faqs = [
   {
     question: "Hvilke CV-maler finnes?",
     answer:
-      "Det finnes 10 maler med unike layouter, farger og stiler — blant annet Nordisk, Oslo, Eksekutiv, Kreativ, Kompakt, Tidslinje, Fjord, Stavanger, Diplomatisk og Bergen. Alle er designet for norsk arbeidsmarked.",
+      "Det finnes 10 maler med unike layouter, farger og stiler, blant annet Nordisk, Oslo, Eksekutiv, Kreativ, Kompakt, Tidslinje, Fjord, Stavanger, Diplomatisk og Bergen. Alle er designet for norsk arbeidsmarked.",
   },
   {
     question: "Kan KI-en skrive sammendrag for meg?",

@@ -35,7 +35,7 @@ const sections = [
     label: "/ BEGRENSNINGER",
     title: "Begrensninger ved KI",
     content:
-      "KI-generert innhold kan inneholde unøyaktigheter eller formuleringer som ikke passer din situasjon. CVpilot er et hjelpeverktøy — ikke en erstatning for egen vurdering. Vi garanterer ikke at bruk av tjenesten fører til jobbintervju eller ansettelse.",
+      "KI-generert innhold kan inneholde unøyaktigheter eller formuleringer som ikke passer din situasjon. CVpilot er et hjelpeverktøy, ikke en erstatning for egen vurdering. Vi garanterer ikke at bruk av tjenesten fører til jobbintervju eller ansettelse.",
   },
   {
     label: "/ BETALING",

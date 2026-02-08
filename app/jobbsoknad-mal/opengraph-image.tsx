@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Jobbsøknad Mal 2026 — Gratis maler og eksempler | CVpilot";
+export const alt = "Jobbsøknad Mal 2026 | Gratis maler og eksempler | CVpilot";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

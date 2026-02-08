@@ -20,7 +20,7 @@ import {
 import { siteConfig } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Jobbsøknad Mal 2026 — Gratis maler og eksempler",
+  title: "Jobbsøknad Mal 2026 | Gratis maler og eksempler",
   description:
     "Last ned gratis jobbsøknad-maler tilpasset norsk arbeidsliv. 3 brevmaler med PSTAR-metoden, konkrete eksempler og tips. Generer søknad med KI på under 2 minutter.",
   keywords: [
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: `${siteConfig.url}/jobbsoknad-mal` },
   openGraph: {
-    title: "Jobbsøknad Mal 2026 — Gratis maler og eksempler",
+    title: "Jobbsøknad Mal 2026 | Gratis maler og eksempler",
     description:
       "Last ned gratis jobbsøknad-maler tilpasset norsk arbeidsliv. 3 brevmaler med PSTAR-metoden.",
     url: `${siteConfig.url}/jobbsoknad-mal`,
@@ -97,7 +97,7 @@ const faqs = [
   {
     question: "Hvilket format bør jeg sende søknaden i?",
     answer:
-      "PDF er anbefalt for de fleste søknader — det bevarer formateringen på tvers av enheter. Noen arbeidsgivere ber om Word-format, og da støtter vi også .docx-eksport.",
+      "PDF er anbefalt for de fleste søknader. Det bevarer formateringen på tvers av enheter. Noen arbeidsgivere ber om Word-format, og da støtter vi også .docx-eksport.",
   },
 ];
 
@@ -151,7 +151,7 @@ export default function JobbsoknadMalPage() {
             </h1>
             <p className="mt-8 max-w-2xl text-sm text-foreground/60 uppercase tracking-wider leading-relaxed">
               Velg blant 3 brevmaler tilpasset ulike bransjer. Basert på
-              PSTAR-metoden — standarden for profesjonelle søknadsbrev i
+              PSTAR-metoden, standarden for profesjonelle søknadsbrev i
               Norge. Generer din søknad med KI på under 2 minutter.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
@@ -238,7 +238,7 @@ export default function JobbsoknadMalPage() {
                   {
                     letter: "S",
                     word: "Situasjon",
-                    desc: "Forklar konteksten — hvilken bedrift, team eller prosjekt var involvert? Hva sto på spill?",
+                    desc: "Forklar konteksten: hvilken bedrift, team eller prosjekt var involvert? Hva sto på spill?",
                   },
                   {
                     letter: "T",
@@ -304,23 +304,23 @@ export default function JobbsoknadMalPage() {
               {[
                 {
                   num: "01",
-                  title: "Innledning — fang oppmerksomheten",
+                  title: "Innledning: fang oppmerksomheten",
                   text: "Start med å referere til stillingen og vis umiddelbar relevans. Unngå klisjéer som «Jeg viser til utlyst stilling». Fortell i stedet kort hva du bringer til bordet. Første setning avgjør om resten blir lest.",
                 },
                 {
                   num: "02",
-                  title: "Hoveddel — vis kompetansen din med PSTAR",
+                  title: "Hoveddel: vis kompetansen din med PSTAR",
                   text: "Bruk 1-2 PSTAR-eksempler som viser at du matcher kravene i annonsen. Velg eksempler som er relevante for stillingen. Bruk konkrete tall og resultater der du kan.",
                 },
                 {
                   num: "03",
-                  title: "Motivasjon — hvorfor akkurat denne bedriften?",
-                  text: "Vis at du har gjort research. Nevn noe spesifikt ved bedriften som motiverer deg — et prosjekt, verdi eller mål. Arbeidsgivere vil vite at du ikke har sendt samme søknad til 50 andre.",
+                  title: "Motivasjon: hvorfor akkurat denne bedriften?",
+                  text: "Vis at du har gjort research. Nevn noe spesifikt ved bedriften som motiverer deg, for eksempel et prosjekt, verdi eller mål. Arbeidsgivere vil vite at du ikke har sendt samme søknad til 50 andre.",
                 },
                 {
                   num: "04",
-                  title: "Avslutning — vær proaktiv",
-                  text: "Avslutt med en selvsikker men ydmyk tone. Si at du ser frem til en samtale og gjør det enkelt for arbeidsgiveren å ta kontakt. Unngå «Håper på svar» — vær heller direkte.",
+                  title: "Avslutning: vær proaktiv",
+                  text: "Avslutt med en selvsikker men ydmyk tone. Si at du ser frem til en samtale og gjør det enkelt for arbeidsgiveren å ta kontakt. Unngå «Håper på svar». Vær heller direkte.",
                 },
               ].map((step) => (
                 <div key={step.num} className="flex gap-6">
@@ -371,7 +371,7 @@ export default function JobbsoknadMalPage() {
                 },
                 {
                   title: "Skrivefeil",
-                  text: "Skrivefeil signaliserer slurv og mangel på oppmerksomhet. Alltid korrekturles — og be gjerne noen andre lese gjennom.",
+                  text: "Skrivefeil signaliserer slurv og mangel på oppmerksomhet. Alltid korrekturles, og be gjerne noen andre lese gjennom.",
                 },
               ].map((feil) => (
                 <div

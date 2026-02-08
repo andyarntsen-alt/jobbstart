@@ -22,7 +22,7 @@ export default async function OGImage({
   const displayTitle =
     title.length > 60 ? title.slice(0, 57) + "..." : title;
 
-  const label = `/ CVPILOT — ${category}`;
+  const label = `/ CVPILOT | ${category}`;
 
   return new ImageResponse(
     (

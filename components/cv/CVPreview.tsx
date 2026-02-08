@@ -58,12 +58,12 @@ export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreview
                 {exp.title}
                 {exp.company && (
                   <span className={`font-normal ${isEksekutiv ? "italic text-gray-500" : "text-gray-500"}`}>
-                    {" "}— {exp.company}
+                    {" "}, {exp.company}
                   </span>
                 )}
               </p>
               <span className="text-[11px] text-gray-400 shrink-0 ml-2">
-                {exp.from} – {exp.to}
+                {exp.from} - {exp.to}
               </span>
             </div>
             {exp.bullets.length > 0 ? (
@@ -96,7 +96,7 @@ export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreview
             <p>
               <span className="font-semibold">{edu.degree}</span>
               {edu.school && (
-                <span className="text-gray-500"> — {edu.school}</span>
+                <span className="text-gray-500">, {edu.school}</span>
               )}
             </p>
             <span className="text-[11px] text-gray-400 shrink-0 ml-2">
@@ -264,9 +264,9 @@ export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreview
                   <div className="flex items-baseline justify-between">
                     <p className="font-semibold font-serif">
                       {exp.title}
-                      {exp.company && <span className="font-normal italic text-gray-500"> — {exp.company}</span>}
+                      {exp.company && <span className="font-normal italic text-gray-500">, {exp.company}</span>}
                     </p>
-                    <span className="text-[11px] text-gray-400 shrink-0 ml-2">{exp.from} – {exp.to}</span>
+                    <span className="text-[11px] text-gray-400 shrink-0 ml-2">{exp.from} - {exp.to}</span>
                   </div>
                   {exp.bullets.length > 0 ? (
                     <ul className="mt-1 space-y-0.5 text-gray-700 font-serif">
@@ -285,7 +285,7 @@ export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreview
               <p className="text-xs uppercase tracking-wider font-bold mb-2 text-[#B27857] font-serif">Utdanning</p>
               {education.map((edu) => (
                 <div key={edu.id} className="mb-1.5 flex items-baseline justify-between">
-                  <p className="font-serif"><span className="font-semibold">{edu.degree}</span>{edu.school && <span className="text-gray-500"> — {edu.school}</span>}</p>
+                  <p className="font-serif"><span className="font-semibold">{edu.degree}</span>{edu.school && <span className="text-gray-500">, {edu.school}</span>}</p>
                   <span className="text-[11px] text-gray-400 shrink-0 ml-2">{edu.year}</span>
                 </div>
               ))}
@@ -368,12 +368,12 @@ export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreview
               {experience.map((exp) => (
                 <div key={exp.id} className="mb-3">
                   <div className="flex items-baseline justify-between">
-                    <p className="font-semibold">{exp.title}{exp.company && <span className="font-normal text-[#DC6C52]"> — {exp.company}</span>}</p>
-                    <span className="text-[11px] text-gray-400 shrink-0 ml-2">{exp.from} – {exp.to}</span>
+                    <p className="font-semibold">{exp.title}{exp.company && <span className="font-normal text-[#DC6C52]">, {exp.company}</span>}</p>
+                    <span className="text-[11px] text-gray-400 shrink-0 ml-2">{exp.from} - {exp.to}</span>
                   </div>
                   {exp.bullets.length > 0 ? (
                     <ul className="mt-1 space-y-0.5 text-gray-700">
-                      {exp.bullets.map((b, i) => <li key={i} className="flex gap-2"><span className="text-[#DC6C52] shrink-0">–</span>{b}</li>)}
+                      {exp.bullets.map((b, i) => <li key={i} className="flex gap-2"><span className="text-[#DC6C52] shrink-0">·</span>{b}</li>)}
                     </ul>
                   ) : exp.description && <p className="mt-1 text-gray-700">{exp.description}</p>}
                 </div>
@@ -388,7 +388,7 @@ export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreview
               </div>
               {education.map((edu) => (
                 <div key={edu.id} className="mb-1.5 flex items-baseline justify-between">
-                  <p><span className="font-semibold">{edu.degree}</span>{edu.school && <span className="text-gray-500"> — {edu.school}</span>}</p>
+                  <p><span className="font-semibold">{edu.degree}</span>{edu.school && <span className="text-gray-500">, {edu.school}</span>}</p>
                   <span className="text-[11px] text-gray-400 shrink-0 ml-2">{edu.year}</span>
                 </div>
               ))}
@@ -440,8 +440,8 @@ export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreview
                 <div key={exp.id} className="relative">
                   <span className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full border-2 border-[#225743] bg-white" />
                   <div className="flex items-baseline justify-between">
-                    <p className="font-semibold">{exp.title}{exp.company && <span className="font-normal text-gray-500"> — {exp.company}</span>}</p>
-                    <span className="text-[10px] text-gray-400 shrink-0 ml-2 font-mono">{exp.from} – {exp.to}</span>
+                    <p className="font-semibold">{exp.title}{exp.company && <span className="font-normal text-gray-500">, {exp.company}</span>}</p>
+                    <span className="text-[10px] text-gray-400 shrink-0 ml-2 font-mono">{exp.from} - {exp.to}</span>
                   </div>
                   {exp.bullets.length > 0 ? (
                     <ul className="mt-1 space-y-0.5 text-gray-700">
@@ -460,7 +460,7 @@ export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreview
               {education.map((edu) => (
                 <div key={edu.id} className="relative flex items-baseline justify-between">
                   <span className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full border-2 border-[#225743] bg-white" />
-                  <p><span className="font-semibold">{edu.degree}</span>{edu.school && <span className="text-gray-500"> — {edu.school}</span>}</p>
+                  <p><span className="font-semibold">{edu.degree}</span>{edu.school && <span className="text-gray-500">, {edu.school}</span>}</p>
                   <span className="text-[10px] text-gray-400 shrink-0 ml-2 font-mono">{edu.year}</span>
                 </div>
               ))}
@@ -493,7 +493,7 @@ export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreview
           <div className="text-center">
             {personal.photo && <img src={personal.photo} alt="" className="h-14 w-14 rounded-full object-cover border border-gray-400 mx-auto mb-3" />}
             <h2 className="text-lg font-bold uppercase tracking-[0.2em] font-mono">{personal.name || "DITT NAVN"}</h2>
-            <p className="text-[10px] text-gray-500 font-mono mt-1">{contactStr.replace(/  ·  /g, "  —  ")}</p>
+            <p className="text-[10px] text-gray-500 font-mono mt-1">{contactStr.replace(/  ·  /g, "  |  ")}</p>
             <div className="w-10 border-t border-gray-500 mx-auto my-4" />
           </div>
           {summary && (
@@ -517,7 +517,7 @@ export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreview
                 <div key={exp.id} className="mb-3 mt-2">
                   <div className="flex items-baseline justify-between">
                     <p className="font-bold font-mono">{exp.title}{exp.company && <span className="font-normal text-gray-500"> ({exp.company})</span>}</p>
-                    <span className="text-[10px] text-gray-400 shrink-0 ml-2 font-mono">{exp.from} – {exp.to}</span>
+                    <span className="text-[10px] text-gray-400 shrink-0 ml-2 font-mono">{exp.from} - {exp.to}</span>
                   </div>
                   {exp.bullets.length > 0 ? (
                     <ul className="mt-1 space-y-0.5 text-gray-700 font-mono text-[12px]">
@@ -592,8 +592,8 @@ export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreview
                 {experience.map((exp) => (
                   <div key={exp.id} className="mb-3">
                     <div className="flex items-baseline justify-between">
-                      <p className="font-semibold">{exp.title}{exp.company && <span className="font-normal text-gray-500"> — {exp.company}</span>}</p>
-                      <span className="text-[10px] text-[#785069] shrink-0 ml-2">{exp.from} – {exp.to}</span>
+                      <p className="font-semibold">{exp.title}{exp.company && <span className="font-normal text-gray-500">, {exp.company}</span>}</p>
+                      <span className="text-[10px] text-[#785069] shrink-0 ml-2">{exp.from} - {exp.to}</span>
                     </div>
                     {exp.bullets.length > 0 ? (
                       <ul className="mt-1 space-y-0.5 text-gray-700">
@@ -613,7 +613,7 @@ export default function CVPreview({ data, hasFullPreview, onUpgrade }: CVPreview
               <div className="flex-1">
                 {education.map((edu) => (
                   <div key={edu.id} className="mb-1.5 flex items-baseline justify-between">
-                    <p><span className="font-semibold">{edu.degree}</span>{edu.school && <span className="text-gray-500"> — {edu.school}</span>}</p>
+                    <p><span className="font-semibold">{edu.degree}</span>{edu.school && <span className="text-gray-500">, {edu.school}</span>}</p>
                     <span className="text-[10px] text-[#785069] shrink-0 ml-2">{edu.year}</span>
                   </div>
                 ))}

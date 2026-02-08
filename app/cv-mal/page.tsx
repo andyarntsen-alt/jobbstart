@@ -19,7 +19,7 @@ import { getBreadcrumbSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "CV Mal 2026 — 10 gratis maler for norsk arbeidsmarked",
+  title: "CV Mal 2026 | 10 gratis maler for norsk arbeidsmarked",
   description:
     "Last ned profesjonelle CV-maler tilpasset norsk arbeidsliv. 10 gratis maler: Nordisk, Oslo, Eksekutiv, Kreativ og mer. Bygg CV-en online med KI-drevne forslag på under 5 minutter.",
   keywords: [
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: `${siteConfig.url}/cv-mal` },
   openGraph: {
-    title: "CV Mal 2026 — 10 gratis maler for norsk arbeidsmarked",
+    title: "CV Mal 2026 | 10 gratis maler for norsk arbeidsmarked",
     description:
       "Last ned profesjonelle CV-maler tilpasset norsk arbeidsliv. 10 gratis maler med KI-drevne forslag.",
     url: `${siteConfig.url}/cv-mal`,
@@ -117,7 +117,7 @@ const cvSections = [
     icon: Star,
     title: "Profesjonelt sammendrag",
     description:
-      "2-3 setninger som oppsummerer din erfaring og hva du tilbyr. Det viktigste avsnittet — bestemmer om arbeidsgiveren leser videre.",
+      "2-3 setninger som oppsummerer din erfaring og hva du tilbyr. Det viktigste avsnittet. Bestemmer om arbeidsgiveren leser videre.",
   },
   {
     icon: Briefcase,
@@ -219,14 +219,14 @@ export default function CVMalPage() {
               / CV-MALER 2026
             </span>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.85]">
-              CV MAL — GRATIS MALER
+              CV MAL: GRATIS MALER
               <br />
               <span className="opacity-20">FOR NORSK ARBEIDSLIV.</span>
             </h1>
             <p className="mt-8 max-w-2xl text-sm text-foreground/60 uppercase tracking-wider leading-relaxed">
               Velg blant 10 profesjonelle CV-maler designet for norsk
               arbeidsmarked. Bygg CV-en online med KI-drevne forslag,
-              automatisk sammendrag og eksport til PDF — ferdig på under 5
+              automatisk sammendrag og eksport til PDF. Ferdig på under 5
               minutter.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
@@ -344,7 +344,7 @@ export default function CVMalPage() {
                 <p>
                   <strong>Kreativ</strong> og <strong>Bergen</strong> lar deg
                   vise personlighet. I kreative bransjer er CV-en i seg selv en
-                  del av porteføljen. Bruk farger og visuell struktur bevisst —
+                  del av porteføljen. Bruk farger og visuell struktur bevisst,
                   men overdriv ikke.
                 </p>
               </div>

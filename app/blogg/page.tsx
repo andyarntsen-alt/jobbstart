@@ -6,7 +6,7 @@ import { siteConfig } from "@/lib/seo";
 import { getBreadcrumbSchema, getBlogItemListSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
-  title: "Blogg — Tips for jobbsøkere i Norge",
+  title: "Blogg | Tips for jobbsøkere i Norge",
   description:
     "Les ekspertråd om jobbsøknader, CV-skriving, intervjutips og karriere i Norge. Oppdaterte guider for norsk arbeidsmarked.",
   keywords: [

@@ -42,12 +42,12 @@ export async function POST(req: NextRequest) {
     let unitAmount: number;
 
     if (plan === "pafyll") {
-      productName = "CVpilot – Påfyll";
+      productName = "CVpilot | Påfyll";
       productDescription = "+5 ekstra søknader";
       unitAmount = TOPUP_PRICE;
     } else {
       const planDef = PLANS[plan as PlanId];
-      productName = `CVpilot – ${planDef.name}`;
+      productName = `CVpilot | ${planDef.name}`;
       productDescription = planDef.description;
       unitAmount = planDef.priceInOre;
     }

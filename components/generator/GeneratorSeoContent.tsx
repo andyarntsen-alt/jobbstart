@@ -48,7 +48,7 @@ const benefits = [
   {
     title: "PSTAR-METODEN",
     description:
-      "Søknaden struktureres etter PSTAR-metoden (Problem, Situasjon, Tiltak, Aksjon, Resultat) — standarden for profesjonelle søknadsbrev i Norge.",
+      "Søknaden struktureres etter PSTAR-metoden (Problem, Situasjon, Tiltak, Aksjon, Resultat), standarden for profesjonelle søknadsbrev i Norge.",
     icon: Target,
   },
   {

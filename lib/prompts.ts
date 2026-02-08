@@ -2,7 +2,7 @@ import type { TemplateStyle } from "@/types/application";
 
 const toneDescriptions: Record<TemplateStyle, string> = {
   konservativ:
-    "Formell og respektfull tone. Bruk 'Dem/Deres' der det passer. Passer for offentlig sektor, storselskaper, advokatfirmaer. Strukturert og tradisjonell. Likevel: unngå steril byråkrat-tone – vis at det er et menneske som skriver.",
+    "Formell og respektfull tone. Bruk 'Dem/Deres' der det passer. Passer for offentlig sektor, storselskaper, advokatfirmaer. Strukturert og tradisjonell. Likevel: unngå steril byråkrat-tone. Vis at det er et menneske som skriver.",
   moderne:
     "Profesjonell men varm tone. Bruk 'dere/deres'. Passer for SMB, tech, konsulentbransjen. Balansert mellom formelt og personlig. Skriv som en kompetent kollega, ikke som en konsulent-PowerPoint.",
   kreativ:
@@ -24,7 +24,7 @@ STRUKTUR (PSTAR-metoden):
    - Task: Hva var din rolle?
    - Action: Hva gjorde du konkret?
    - Result: Målbart resultat med tall der mulig.
-3. Avslutning: Kort, konkret. Ikke skriv "Jeg ser frem til å høre fra dere" – det er for generisk.
+3. Avslutning: Kort, konkret. Ikke skriv "Jeg ser frem til å høre fra dere", det er for generisk.
 
 ---
 
@@ -37,7 +37,7 @@ Disse ordene og frasene AVSLØRER AI-tekst og skal ALDRI brukes:
 
 FORBUDTE ORD/FRASER:
 - "Lidenskapelig" (bruk "engasjert" eller "nysgjerrig" i stedet)
-- "Videre", "Imidlertid", "Dessuten", "Konklusjonsvis" (skriv uten overganger – gå rett på neste poeng)
+- "Videre", "Imidlertid", "Dessuten", "Konklusjonsvis" (skriv uten overganger, gå rett på neste poeng)
 - "Synergi", "Strategisk justering", "Optimalisering", "Strategisk løft" (bruk "samarbeid", "tilpasning", "forbedring")
 - "Robust", "Dynamisk", "Visjonær" (bruk "solid", "i endring", "fremtidsrettet")
 - "I tillegg til dette...", "Det er viktig å nevne at...", "Det er verdt å merke seg" (bare si det)
@@ -46,7 +46,7 @@ FORBUDTE ORD/FRASER:
 - "Revolusjonere", "Transformere" (nordmenn lover ikke revolusjoner)
 - "Kjernekompetanse", "Verdiskapning" (konsulent-tåkeprat)
 - "Hardtarbeidende", "Jeg er en hardtarbeidende person" (vis det med eksempler i stedet)
-- "Erfaren" alene (skriv "har 5 års erfaring med X" – vær konkret)
+- "Erfaren" alene (skriv "har 5 års erfaring med X", vær konkret)
 
 FORBUDTE SELVFØLGELIGHETER (disse sier ingenting):
 - "Jeg skriver for å søke på stillingen" (det er åpenbart)
@@ -76,13 +76,13 @@ INFORMASJONSTETTHET (Chain-of-Density):
 - Bruk tall og konkrete fakta. "Ledet team på 8 personer" ikke "Ledet et team".
 - Fjern alle adjektiver som ikke tilfører ny informasjon.
 - Foretrekk sammensatte norske ord ("prosjektleder", "kundeoppfølging") fremfor omskrivninger.
-- KONKRETISERING: Ikke skriv "erfaren" – skriv "har 5 års erfaring med X". Ikke skriv "god på kommunikasjon" – skriv "holdt ukentlige presentasjoner for 20+ kunder".
+- KONKRETISERING: Ikke skriv "erfaren", skriv "har 5 års erfaring med X". Ikke skriv "god på kommunikasjon", skriv "holdt ukentlige presentasjoner for 20+ kunder".
 
 ---
 
 MENNESKELIGE SIGNATURER:
 - Inkluder gjerne én personlig refleksjon eller ærlig vurdering. Eksempel: "Jeg var usikker på om X var riktig tilnærming, men resultatet viste at..."
-- Bruk parenteser sparsomt for å legge inn en sidetanke – det gjør teksten menneskelig.
+- Bruk parenteser sparsomt for å legge inn en sidetanke. Det gjør teksten menneskelig.
 - Det er OK å innrømme noe du lærte underveis. Perfeksjon er et rødt flagg.
 
 ---
@@ -101,14 +101,14 @@ export function buildUserPrompt(
   userBackground: string,
   contactName: string
 ): string {
-  let prompt = `STEG 1 – ANALYSE (gjør dette internt, ikke vis det):
+  let prompt = `STEG 1: ANALYSE (gjør dette internt, ikke vis det):
 - Hva er bedriftens faktiske behov bak stillingsannonsen?
 - Hvilke nøkkelord må med for ATS?
 - Hvilken tone passer for denne type bedrift?
 
-STEG 2 – SKRIV SØKNADEN basert på analysen.
+STEG 2: SKRIV SØKNADEN basert på analysen.
 
-STEG 3 – CHAIN-OF-DENSITY (gjør dette internt, ikke vis det):
+STEG 3: CHAIN-OF-DENSITY (gjør dette internt, ikke vis det):
 Skriv søknaden om internt 2 ganger til. Hver gang:
 - Fjern fyllord og vage adjektiver
 - Legg inn flere konkrete bevis, tall og fakta fra søkerens bakgrunn
@@ -143,9 +143,9 @@ export function buildBackgroundImproveSystemPrompt(): string {
 REGLER:
 - Skriv i jeg-form, naturlig norsk bokmål
 - Utvid til 2-4 sammenhengende setninger (maks 150 ord)
-- Behold ALLE fakta fra originalteksten — ALDRI dikt opp tall, erfaringer, firmanavn eller utdanning
+- Behold ALLE fakta fra originalteksten. ALDRI dikt opp tall, erfaringer, firmanavn eller utdanning
 - Fokuser på: konkret erfaring, relevante ferdigheter, hva personen kan bidra med
-- Skriv profesjonelt men personlig — ikke stivt, ikke for uformelt
+- Skriv profesjonelt men personlig, ikke stivt, ikke for uformelt
 - IKKE bruk: "lidenskapelig", "dynamisk", "robust", "synergi", "verdiskapning"
 - Returner KUN den forbedrede teksten, ingen overskrifter eller kommentarer`;
 }

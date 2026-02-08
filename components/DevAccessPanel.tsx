@@ -52,7 +52,7 @@ export default function DevAccessPanel() {
                   : "hover:bg-white/10"
               }`}
             >
-              {PLANS[id].name} — {PLANS[id].price} kr
+              {PLANS[id].name}, {PLANS[id].price} kr
             </button>
           ))}
         </div>

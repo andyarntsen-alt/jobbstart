@@ -75,7 +75,7 @@ export default function UpgradeDialog({
               }}
             >
               <Plus className="h-4 w-4" />
-              Kjøp påfyll — {TOPUP_PRICE / 100} kr
+              Kjøp påfyll, {TOPUP_PRICE / 100} kr
             </Button>
           </div>
         ) : (

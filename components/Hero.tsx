@@ -40,7 +40,7 @@ export default function Hero() {
           >
             <div className="flex flex-col gap-4 max-w-[450px]">
               <p className="text-sm text-foreground/60 uppercase tracking-wider leading-relaxed">
-                Lim inn en stillingsannonse og få en skreddersydd søknad — eller bygg en profesjonell CV med KI-drevne forslag. Alt tilpasset norsk arbeidsliv.
+                Lim inn en stillingsannonse og få en skreddersydd søknad, eller bygg en profesjonell CV med KI-drevne forslag. Alt tilpasset norsk arbeidsliv.
               </p>
               <p className="text-sm text-foreground uppercase tracking-wider leading-relaxed font-bold">
                 Søknad og CV ferdig på under 2 minutter. Ingen erfaring med jobbsøking nødvendig.

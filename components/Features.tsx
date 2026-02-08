@@ -11,7 +11,7 @@ const products = [
     href: "/generator",
     cta: "Lag søknad",
     features: [
-      "FINN.no-integrasjon — lim inn URL, hent automatisk",
+      "FINN.no-integrasjon: lim inn URL, hent automatisk",
       "3 brevmaler: Konservativ, Moderne, Kreativ",
       "3 eksportlayouter for ulik stil",
       "Redigerbar i nettleseren før eksport",

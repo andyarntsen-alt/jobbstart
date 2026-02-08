@@ -287,7 +287,7 @@ export function getCVFAQSchema() {
         name: "Hvilke CV-maler finnes?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Det finnes 10 maler med unike layouter, farger og stiler — blant annet Nordisk, Oslo, Eksekutiv, Kreativ, Kompakt, Tidslinje, Fjord, Stavanger, Diplomatisk og Bergen. Alle er designet for norsk arbeidsmarked.",
+          text: "Det finnes 10 maler med unike layouter, farger og stiler, blant annet Nordisk, Oslo, Eksekutiv, Kreativ, Kompakt, Tidslinje, Fjord, Stavanger, Diplomatisk og Bergen. Alle er designet for norsk arbeidsmarked.",
         },
       },
       {

@@ -17,7 +17,7 @@ export function buildSummaryUserPrompt(experiences: CVExperience[]): string {
   const experienceText = experiences
     .map(
       (exp) =>
-        `${exp.title} hos ${exp.company} (${exp.from} – ${exp.to}): ${exp.description}`
+        `${exp.title} hos ${exp.company} (${exp.from} - ${exp.to}): ${exp.description}`
     )
     .join("\n");
 
@@ -29,10 +29,10 @@ export function buildImproveSystemPrompt(): string {
 
 REGLER:
 - Start hvert punkt med passende verb (Utførte, Fulgte opp, Deltok i, Dokumenterte, Samarbeidet med, Håndterte, Bistod, Koordinerte, Gjennomførte, Forbedret)
-- Skriv utfyllende punkter på 20-40 ord hver — beskriv HVA personen gjorde og HVORDAN
-- Hvis originalteksten er kort, omformuler det som finnes til profesjonelt språk — ALDRI legg til oppgaver, ansvarsområder eller ferdigheter som ikke er nevnt i originalteksten
+- Skriv utfyllende punkter på 20-40 ord hver. Beskriv HVA personen gjorde og HVORDAN
+- Hvis originalteksten er kort, omformuler det som finnes til profesjonelt språk. ALDRI legg til oppgaver, ansvarsområder eller ferdigheter som ikke er nevnt i originalteksten
 - ALDRI dikt opp tall, prosenter, statistikk eller spesifikke fakta som ikke finnes i originalteksten
-- ALDRI overdriv rollen — bruk "Deltok i" ikke "Ledet" med mindre brukeren eksplisitt nevnte ledelse
+- ALDRI overdriv rollen. Bruk "Deltok i" ikke "Ledet" med mindre brukeren eksplisitt nevnte ledelse
 - Behold alt innhold fra originalteksten, men omformuler det profesjonelt
 - 3-6 bullet points avhengig av hvor mye innhold det er
 - Norsk bokmål

@@ -15,7 +15,7 @@ import { getBreadcrumbSchema } from "@/lib/structured-data";
 import { siteConfig } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Søknadsbrev 2026 — Komplett guide med eksempler",
+  title: "Søknadsbrev 2026 | Komplett guide med eksempler",
   description:
     "Lær hvordan du skriver et overbevisende søknadsbrev. Komplett guide med konkrete eksempler, før/etter-sammenligning og PSTAR-metoden. Generer søknadsbrev med KI.",
   keywords: [
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: `${siteConfig.url}/soknadsbrev` },
   openGraph: {
-    title: "Søknadsbrev 2026 — Komplett guide med eksempler",
+    title: "Søknadsbrev 2026 | Komplett guide med eksempler",
     description:
       "Lær hvordan du skriver et overbevisende søknadsbrev. Komplett guide med eksempler og PSTAR-metoden.",
     url: `${siteConfig.url}/soknadsbrev`,
@@ -43,7 +43,7 @@ const faqs = [
   {
     question: "Hva er forskjellen mellom søknadsbrev og CV?",
     answer:
-      "CV-en er en strukturert oversikt over din erfaring, utdanning og ferdigheter. Søknadsbrevet er et personlig brev som forklarer hvorfor du er riktig person for stillingen. De to dokumentene utfyller hverandre — CV-en viser hva du har gjort, søknadsbrevet forklarer hvorfor det er relevant.",
+      "CV-en er en strukturert oversikt over din erfaring, utdanning og ferdigheter. Søknadsbrevet er et personlig brev som forklarer hvorfor du er riktig person for stillingen. De to dokumentene utfyller hverandre. CV-en viser hva du har gjort, søknadsbrevet forklarer hvorfor det er relevant.",
   },
   {
     question: "Må jeg alltid sende søknadsbrev?",
@@ -63,7 +63,7 @@ const faqs = [
   {
     question: "Kan KI skrive søknadsbrevet mitt?",
     answer:
-      "KI-en genererer et komplett førsteutkast basert på stillingsannonsen og din bakgrunn, strukturert etter PSTAR-metoden. Vi anbefaler alltid å lese gjennom og tilpasse til din personlige stil — det gir det beste resultatet.",
+      "KI-en genererer et komplett førsteutkast basert på stillingsannonsen og din bakgrunn, strukturert etter PSTAR-metoden. Vi anbefaler alltid å lese gjennom og tilpasse til din personlige stil. Det gir det beste resultatet.",
   },
 ];
 
@@ -206,7 +206,7 @@ export default function SoknadsbrevPage() {
                 {
                   num: "01",
                   title: "Overskrift og mottaker",
-                  text: "Start med ditt navn, kontaktinformasjon og dato. Adresser brevet til riktig person — finn navnet i stillingsannonsen. «Til rette vedkommende» er siste utvei.",
+                  text: "Start med ditt navn, kontaktinformasjon og dato. Adresser brevet til riktig person. Finn navnet i stillingsannonsen. «Til rette vedkommende» er siste utvei.",
                 },
                 {
                   num: "02",
@@ -221,12 +221,12 @@ export default function SoknadsbrevPage() {
                 {
                   num: "04",
                   title: "Motivasjon for bedriften",
-                  text: "Vis at du har gjort research. Nevn noe spesifikt ved bedriften — et prosjekt, en verdi eller et mål — som motiverer deg. Arbeidsgivere vil vite at de er mer enn bare «en jobb».",
+                  text: "Vis at du har gjort research. Nevn noe spesifikt ved bedriften (et prosjekt, en verdi eller et mål) som motiverer deg. Arbeidsgivere vil vite at de er mer enn bare «en jobb».",
                 },
                 {
                   num: "05",
                   title: "Avslutning med handlingsoppfordring",
-                  text: "Avslutt med å si at du ser frem til en samtale. Vær selvsikker men ydmyk. Gjør det enkelt for arbeidsgiveren å ta kontakt — inkluder telefonnummer og e-post.",
+                  text: "Avslutt med å si at du ser frem til en samtale. Vær selvsikker men ydmyk. Gjør det enkelt for arbeidsgiveren å ta kontakt. Inkluder telefonnummer og e-post.",
                 },
               ].map((step) => (
                 <div key={step.num} className="flex gap-6">
@@ -335,7 +335,7 @@ export default function SoknadsbrevPage() {
                 },
                 {
                   title: "For lang tekst",
-                  text: "Maks én A4-side (300-400 ord). Rekrutterere har lite tid. Hvert avsnitt skal ha en tydelig funksjon — ingen fyllord eller gjentakelser.",
+                  text: "Maks én A4-side (300-400 ord). Rekrutterere har lite tid. Hvert avsnitt skal ha en tydelig funksjon, ingen fyllord eller gjentakelser.",
                 },
               ].map((feil) => (
                 <div

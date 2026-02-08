@@ -41,7 +41,7 @@ export default function GeneratedLetter({
       ) : (
         <PaywallOverlay
           visiblePercent={0.6}
-          ctaText="Lås opp hele søknaden — fra 49 kr"
+          ctaText="Lås opp hele søknaden, fra 49 kr"
           onUpgrade={onUpgrade}
           watermarkText="CVPILOT.NO"
         >
