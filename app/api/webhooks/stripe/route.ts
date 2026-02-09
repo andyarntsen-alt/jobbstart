@@ -57,22 +57,42 @@ export async function POST(req: NextRequest) {
           }
         }
 
-        // Insert purchase record
-        const { error: purchaseError } = await supabase.from("purchases").insert({
-          user_id: userId || null,
-          plan,
-          amount,
-          currency: "nok",
-          stripe_session_id: session.id,
-          stripe_email: email || null,
-        });
+        // Check if this session was already processed (idempotency guard)
+        const { data: existingPurchase } = await supabase
+          .from("purchases")
+          .select("id")
+          .eq("stripe_session_id", session.id)
+          .single();
+
+        const isRetry = !!existingPurchase;
+
+        // Upsert purchase record (safe for Stripe retries)
+        const { error: purchaseError } = await supabase
+          .from("purchases")
+          .upsert(
+            {
+              user_id: userId || null,
+              plan,
+              amount,
+              currency: "nok",
+              stripe_session_id: session.id,
+              stripe_email: email || null,
+            },
+            { onConflict: "stripe_session_id" }
+          );
 
         if (purchaseError) {
-          console.error("[PAYMENT] Purchase insert failed:", purchaseError);
+          console.error("[PAYMENT] Purchase upsert failed:", purchaseError);
           return NextResponse.json(
             { error: "Database error: purchase" },
             { status: 500 }
           );
+        }
+
+        // If this is a retry, purchase already exists — skip profile/credit updates
+        if (isRetry) {
+          console.log(`[PAYMENT] Retry detected for session ${session.id}, skipping`);
+          break;
         }
 
         // Update/create user profile
