@@ -112,6 +112,7 @@ export default function AdminPage() {
   // Stats
   const [stats, setStats] = useState<Stats | null>(null);
   const [statsLoading, setStatsLoading] = useState(false);
+  const [statsError, setStatsError] = useState<string | null>(null);
 
   // Users
   const [users, setUsers] = useState<UserProfile[]>([]);
@@ -161,13 +162,19 @@ export default function AdminPage() {
   // Fetch stats
   const fetchStats = useCallback(async () => {
     setStatsLoading(true);
+    setStatsError(null);
     try {
       const headers = await getAuthHeaders();
       const res = await fetch("/api/admin/stats", { headers });
       if (res.ok) {
         setStats(await res.json());
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setStatsError(data.error || `Feil ${res.status}`);
       }
-    } catch { /* ignore */ }
+    } catch {
+      setStatsError("Nettverksfeil");
+    }
     setStatsLoading(false);
   }, []);
 
@@ -179,7 +186,7 @@ export default function AdminPage() {
       const res = await fetch("/api/admin/users", { headers });
       if (res.ok) {
         const data = await res.json();
-        setUsers(data.users);
+        setUsers(Array.isArray(data) ? data : data.users ?? []);
       }
     } catch { /* ignore */ }
     setUsersLoading(false);
@@ -193,7 +200,7 @@ export default function AdminPage() {
       const res = await fetch("/api/admin/purchases", { headers });
       if (res.ok) {
         const data = await res.json();
-        setPurchases(data.purchases);
+        setPurchases(Array.isArray(data) ? data : data.purchases ?? []);
       }
     } catch { /* ignore */ }
     setPurchasesLoading(false);
@@ -241,11 +248,10 @@ export default function AdminPage() {
         body: JSON.stringify(editFields),
       });
       if (res.ok) {
-        const data = await res.json();
-        setSelectedUser({ ...selectedUser, profile: data.profile });
-        // Update in list
+        const updatedProfile = await res.json();
+        setSelectedUser({ ...selectedUser, profile: updatedProfile });
         setUsers((prev) =>
-          prev.map((u) => (u.id === data.profile.id ? data.profile : u))
+          prev.map((u) => (u.id === updatedProfile.id ? updatedProfile : u))
         );
       }
     } catch { /* ignore */ }
@@ -269,8 +275,8 @@ export default function AdminPage() {
   const filteredUsers = userSearch
     ? users.filter(
         (u) =>
-          u.email.toLowerCase().includes(userSearch.toLowerCase()) ||
-          u.plan.toLowerCase().includes(userSearch.toLowerCase())
+          (u.email || "").toLowerCase().includes(userSearch.toLowerCase()) ||
+          (u.plan || "").toLowerCase().includes(userSearch.toLowerCase())
       )
     : users;
 
@@ -326,7 +332,15 @@ export default function AdminPage() {
         {/* Oversikt */}
         {tab === "oversikt" && (
           <div className="space-y-8">
-            {statsLoading || !stats ? (
+            {statsError ? (
+              <div className="border border-red-200 bg-red-50 p-5 text-sm text-red-800">
+                <p className="font-bold">Kunne ikke laste stats</p>
+                <p className="mt-1 text-red-600">{statsError}</p>
+                <button onClick={fetchStats} className="mt-3 text-xs font-bold uppercase tracking-wider underline">
+                  Prov igjen
+                </button>
+              </div>
+            ) : statsLoading || !stats ? (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[...Array(4)].map((_, i) => (
                   <Skeleton key={i} className="h-24 rounded-none" />
@@ -362,7 +376,7 @@ export default function AdminPage() {
 
                 <div>
                   <span className="industrial-label block mb-4">/ Siste kjop</span>
-                  {stats.recentPurchases.length > 0 ? (
+                  {(stats.recentPurchases?.length ?? 0) > 0 ? (
                     <div className="space-y-1">
                       {stats.recentPurchases.map((p) => (
                         <div

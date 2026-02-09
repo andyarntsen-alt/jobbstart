@@ -27,6 +27,7 @@ export async function GET(req: NextRequest) {
       .select("plan", { count: "exact" });
 
     if (profilesError) {
+      console.error("[ADMIN] Profiles query failed:", profilesError);
       throw profilesError;
     }
 
@@ -55,59 +56,37 @@ export async function GET(req: NextRequest) {
       .select("amount");
 
     if (purchasesError) {
+      console.error("[ADMIN] Purchases query failed:", purchasesError);
       throw purchasesError;
     }
 
     const totalPurchases = purchases?.length ?? 0;
     const totalRevenue = purchases?.reduce((sum, p: any) => sum + (p.amount || 0), 0) ?? 0;
 
-    // Get recent 10 purchases with user email
+    // Get recent 10 purchases
     const { data: recentPurchases, error: recentError } = await supabase
       .from("purchases")
-      .select(
-        `
-        id,
-        user_id,
-        plan,
-        amount,
-        currency,
-        stripe_session_id,
-        stripe_email,
-        created_at,
-        profiles(email)
-      `
-      )
+      .select("id, user_id, plan, amount, currency, stripe_session_id, stripe_email, created_at")
       .order("created_at", { ascending: false })
       .limit(10);
 
     if (recentError) {
+      console.error("[ADMIN] Recent purchases query failed:", recentError);
       throw recentError;
     }
-
-    // Format recent purchases with email
-    const formattedRecent = recentPurchases?.map((purchase: any) => ({
-      id: purchase.id,
-      user_id: purchase.user_id,
-      plan: purchase.plan,
-      amount: purchase.amount,
-      currency: purchase.currency,
-      stripe_session_id: purchase.stripe_session_id,
-      stripe_email: purchase.stripe_email,
-      created_at: purchase.created_at,
-      user_email: purchase.profiles?.email || purchase.stripe_email || null,
-    })) ?? [];
 
     return NextResponse.json({
       totalUsers,
       planBreakdown,
       totalPurchases,
       totalRevenue,
-      recentPurchases: formattedRecent,
+      recentPurchases: recentPurchases ?? [],
     });
   } catch (error) {
-    console.error("Admin stats error:", error);
+    console.error("[ADMIN] Stats error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to fetch admin stats" },
+      { error: `Failed to fetch admin stats: ${message}` },
       { status: 500 }
     );
   }
