@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, Menu, X, LogIn, LogOut } from "lucide-react";
+import { ChevronRight, Menu, X, LogIn, LogOut, Shield } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
+import { getSupabaseClient } from "@/lib/supabase/client";
 import LoginDialog from "@/components/LoginDialog";
 
 const menuItems = [
@@ -17,7 +18,16 @@ const menuItems = [
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { user, loading, signOut } = useAuth();
+
+  useEffect(() => {
+    if (!user) { setIsAdmin(false); return; }
+    const supabase = getSupabaseClient();
+    if (!supabase) return;
+    supabase.from("profiles").select("is_admin").eq("id", user.id).single()
+      .then(({ data }) => setIsAdmin(data?.is_admin ?? false));
+  }, [user]);
 
   return (
     <>
@@ -70,6 +80,15 @@ export default function Header() {
                 className="text-[13px] font-medium text-foreground/60 hover:text-foreground transition-colors"
               >
                 Mine dokumenter
+              </Link>
+            )}
+            {!loading && user && isAdmin && (
+              <Link
+                href="/admin"
+                className="flex items-center gap-1 text-[13px] font-medium text-foreground/60 hover:text-foreground transition-colors"
+              >
+                <Shield className="h-3 w-3" />
+                Admin
               </Link>
             )}
             {!loading && (
@@ -130,6 +149,15 @@ export default function Header() {
                       className="block px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-foreground/70 hover:bg-foreground hover:text-background transition-all border-b border-foreground/5"
                     >
                       Mine dokumenter
+                    </Link>
+                  )}
+                  {!loading && user && isAdmin && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setMenuOpen(false)}
+                      className="block px-5 py-3 text-[11px] font-bold uppercase tracking-widest text-foreground/70 hover:bg-foreground hover:text-background transition-all border-b border-foreground/5"
+                    >
+                      Admin
                     </Link>
                   )}
                   {!loading && (
