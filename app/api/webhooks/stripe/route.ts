@@ -89,13 +89,7 @@ export async function POST(req: NextRequest) {
           );
         }
 
-        // If this is a retry, purchase already exists — skip profile/credit updates
-        if (isRetry) {
-          console.log(`[PAYMENT] Retry detected for session ${session.id}, skipping`);
-          break;
-        }
-
-        // Update/create user profile
+        // Update/create user profile (idempotent — sets absolute values)
         if (userId && plan !== "pafyll") {
           const planDef = PLANS[plan as PlanId];
           if (planDef) {
@@ -124,8 +118,13 @@ export async function POST(req: NextRequest) {
           }
         }
 
-        // Handle top-up: add credits to existing profile
+        // Handle top-up: add credits to existing profile (NOT idempotent — relative increment)
         if (userId && plan === "pafyll") {
+          if (isRetry) {
+            console.log(`[PAYMENT] Top-up retry detected for session ${session.id}, skipping credit addition`);
+            break;
+          }
+
           const { data: profile } = await supabase
             .from("profiles")
             .select("applications_remaining")
