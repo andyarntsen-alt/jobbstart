@@ -8,8 +8,9 @@ interface CreditResult {
 }
 
 /**
- * Server-side: check and consume 1 application credit.
- * Reads profile, verifies credits > 0, decrements atomically.
+ * Server-side: consume 1 application credit atomically.
+ * Uses a Postgres function that checks AND decrements in a single operation,
+ * preventing race conditions from double-clicks or concurrent requests.
  */
 export async function consumeApplicationCreditServer(
   userId: string
@@ -17,41 +18,25 @@ export async function consumeApplicationCreditServer(
   const supabase = getSupabaseServer();
   if (!supabase) return { success: false, remaining: 0 };
 
-  const { data: profile, error: fetchError } = await supabase
-    .from("profiles")
-    .select("applications_remaining, applications_used")
-    .eq("id", userId)
-    .single();
+  const { data, error } = await supabase.rpc("consume_application_credit", {
+    p_user_id: userId,
+  });
 
-  if (fetchError || !profile) {
+  if (error) {
+    console.error("[CREDIT] Application credit RPC failed:", error);
     return { success: false, remaining: 0 };
   }
 
-  if (profile.applications_remaining <= 0) {
-    return { success: false, remaining: 0 };
-  }
+  const row = data?.[0];
+  if (!row) return { success: false, remaining: 0 };
 
-  const newRemaining = profile.applications_remaining - 1;
-  const { error: updateError } = await supabase
-    .from("profiles")
-    .update({
-      applications_remaining: newRemaining,
-      applications_used: profile.applications_used + 1,
-    })
-    .eq("id", userId);
-
-  if (updateError) {
-    console.error("[CREDIT] Application credit update failed:", updateError);
-    return { success: false, remaining: profile.applications_remaining };
-  }
-
-  return { success: true, remaining: newRemaining };
+  return { success: row.success, remaining: row.remaining };
 }
 
 /**
- * Server-side: check and consume 1 improve-experience credit.
- * Only applies to plans with a finite limit (e.g. standard: 10).
- * Plans with unlimited (-1) should skip this check.
+ * Server-side: consume 1 improve-experience credit atomically.
+ * Plans with unlimited (-1) skip the check entirely.
+ * Plans with 0 are blocked. Others use a Postgres function for atomic decrement.
  */
 export async function consumeImproveCreditServer(
   userId: string,
@@ -73,34 +58,18 @@ export async function consumeImproveCreditServer(
   const supabase = getSupabaseServer();
   if (!supabase) return { success: false, remaining: 0 };
 
-  const { data: profile, error: fetchError } = await supabase
-    .from("profiles")
-    .select("improve_experience_used")
-    .eq("id", userId)
-    .single();
+  const { data, error } = await supabase.rpc("consume_improve_credit", {
+    p_user_id: userId,
+    p_limit: planDef.aiImproveExperience,
+  });
 
-  if (fetchError || !profile) {
+  if (error) {
+    console.error("[CREDIT] Improve credit RPC failed:", error);
     return { success: false, remaining: 0 };
   }
 
-  const limit = planDef.aiImproveExperience;
-  const used = profile.improve_experience_used;
+  const row = data?.[0];
+  if (!row) return { success: false, remaining: 0 };
 
-  if (used >= limit) {
-    return { success: false, remaining: 0 };
-  }
-
-  const { error: updateError } = await supabase
-    .from("profiles")
-    .update({
-      improve_experience_used: used + 1,
-    })
-    .eq("id", userId);
-
-  if (updateError) {
-    console.error("[CREDIT] Improve credit update failed:", updateError);
-    return { success: false, remaining: limit - used };
-  }
-
-  return { success: true, remaining: limit - used - 1 };
+  return { success: row.success, remaining: row.remaining };
 }
